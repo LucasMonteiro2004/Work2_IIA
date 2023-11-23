@@ -38,7 +38,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu99 -fdiagnostics-color=always"
+					"fragment" : "-g -std=gnu11 -fdiagnostics-color=always"
 				}
 			],
 			"language" : "C",
@@ -48,12 +48,12 @@
 				[
 					1
 				],
-				"standard" : "99"
+				"standard" : "11"
 			},
 			"sourceIndexes" : 
 			[
 				0,
-				2
+				1
 			]
 		}
 	],
@@ -91,14 +91,14 @@
 			"sourceIndexes" : 
 			[
 				0,
-				2
+				1
 			]
 		},
 		{
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				1
+				2
 			]
 		}
 	],
@@ -112,14 +112,14 @@
 		},
 		{
 			"backtrace" : 1,
-			"path" : "Ficheiros.h",
-			"sourceGroupIndex" : 1
+			"compileGroupIndex" : 0,
+			"path" : "PesquizaLocal.c",
+			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "Ficheiros.c",
-			"sourceGroupIndex" : 0
+			"path" : "PesquisaLocal.h",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"
