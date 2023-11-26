@@ -26,3 +26,11 @@ void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **ed
     }
     fclose(file);
 }
+
+void generates_initial_solution(int k, int numVertices, int numEdges, Edge *edges){
+    int solucao[k];
+    int custoTotal = 0;
+    int contadorVertices = 0;
+
+    
+}

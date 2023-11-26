@@ -11,5 +11,6 @@ typedef struct {
 } Edge;
 
 void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges);
+void generates_initial_solution(int k, int numVertices, int numEdges, Edge *edges);
 
 #endif //VERSAO1_PESQUISALOCAL_H
