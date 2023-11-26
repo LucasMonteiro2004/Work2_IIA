@@ -1,16 +1,20 @@
 #ifndef VERSAO1_PESQUISALOCAL_H
 #define VERSAO1_PESQUISALOCAL_H
 
-int* init_dados(char *nome, int *n, int *iter);
-void gera_sol_inicial(int *sol, int v);
-void escreve_sol(int *sol, int vert);
-void substitui(int a[], int b[], int n);
-void init_rand();
-int random_l_h(int min, int max);
-float rand_01();
-int calcula_fit(int a[], int *mat, int vert);
-int trepa_colinas(int sol[], int *mat, int vert, int num_iter);
-int trepa_colinas_prob(int sol[], int *mat, int vert, int num_iter);
-int recristalizacao(int sol[], int *mat, int vert);
+#include <stdio.h>
+#include <stdlib.h>
+
+//estrutura das arestas
+typedef struct {
+    char car;
+    int u, v, cost;
+} Edge;
+
+typedef struct {
+    char lixo[7];
+    int num;
+}header;
+
+void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges);
 
 #endif //VERSAO1_PESQUISALOCAL_H
