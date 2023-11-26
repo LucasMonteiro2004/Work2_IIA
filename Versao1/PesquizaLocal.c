@@ -13,14 +13,9 @@ void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **ed
         exit(1);
     }
 
-    fseek(file, sizeof(char), SEEK_SET);
-    fscanf(file, "%d", k);
-
-    fseek(file, sizeof(header), SEEK_SET);
-    fscanf(file, "%d %d", numVertices, numEdges);
+    fscanf(file, "%*s %d %*s %*s %d %d", k, numVertices, numEdges);
 
     *edges = (Edge *)malloc(sizeof(Edge) * (*numEdges));
-
     for (int i = 0; i < *numEdges; i++) {
         fscanf(file, " %c %d %d %d", &type, &u, &v, &cost);
 

@@ -10,11 +10,6 @@ typedef struct {
     int u, v, cost;
 } Edge;
 
-typedef struct {
-    char lixo[7];
-    int num;
-}header;
-
 void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges);
 
 #endif //VERSAO1_PESQUISALOCAL_H
