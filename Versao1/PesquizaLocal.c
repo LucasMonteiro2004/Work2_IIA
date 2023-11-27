@@ -90,6 +90,6 @@ int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo){
     return NULL;
 }
 
-void trepa_colinas(int *k,Edge **edges){
+void Hill_Climbing(int *solucaoInicial, int numVertices, int numInter){
 
 }
