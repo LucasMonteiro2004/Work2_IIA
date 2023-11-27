@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "PesquisaLocal.h"
 
-void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges) {
+void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges, Grafo **grafo) {
     FILE *file = fopen(fileName, "rt");
 
     char type;
@@ -24,14 +25,71 @@ void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **ed
         (*edges)[i].v = v;
         (*edges)[i].cost = cost;
     }
+
+    (*grafo)->numVertices = *numVertices;
+    (*grafo)->numArestas = *numEdges;
+
     fclose(file);
 }
 
-// Função para imprimir o subconjunto de vértices
 void imprimirSubconjunto(int* subconjunto, int tamanho) {
     printf("Subconjunto de vertices: ");
     for (int i = 0; i < tamanho; ++i) {
         printf("%d ", subconjunto[i]);
     }
     printf("\n");
+}
+
+int calculaCustoTotal(int *solucao, Edge **edges, int numArestas) {
+    int custoTotal = 0;
+
+    for (int i = 0; i < numArestas; ++i) {
+        int pos1 = (*edges)[i].u - 1, pos2 = (*edges)[i].v - 1;
+
+        if (solucao[pos1] == 1 && solucao[pos2] == 1) {
+            custoTotal += (*edges)[i].cost;
+        }
+    }
+
+    return custoTotal;
+}
+
+int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo){
+    int tam = (*grafo)->numVertices;
+    int *solucaoInicial = (int*)malloc(tam * sizeof(int));
+
+    for (int i = 0; i < tam; ++i) {
+        solucaoInicial[i] = 0;
+    }
+
+    srand(time(NULL));
+    int custoTotal = 0;
+    int numeroAleatorio = rand() % 3;
+
+    for (int i = numeroAleatorio; i < (*grafo)->numArestas; ++i) {
+        int pos1 = (*edges)[i].u - 1, pos2 = (*edges)[i].v - 1;
+        solucaoInicial[pos1] = 1;
+        solucaoInicial[pos2] = 1;
+
+        custoTotal = calculaCustoTotal(solucaoInicial, edges, (*grafo)->numArestas);
+
+        int contador = 0;
+        for (int j = 0; j < tam; ++j) {
+            if (solucaoInicial[j] == 1) {
+                contador++;
+            }
+        }
+
+        if (contador == *k) {
+            printf("Custo total = %d\n", custoTotal);
+            return solucaoInicial;
+        }
+    }
+
+    free(solucaoInicial);
+    return NULL;
+}
+
+void trepa_colinas(int *k,Edge **edges){
+
 }

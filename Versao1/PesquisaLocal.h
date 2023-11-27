@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//estrutura das arestas
 typedef struct {
     char car;
     int u, v, cost;
@@ -13,9 +12,10 @@ typedef struct {
 typedef struct {
     int numVertices;
     int numArestas;
-    Edge* arestas;
 } Grafo;
 
-void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges);
+void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges, Grafo **grafo);
+void imprimirSubconjunto(int* subconjunto, int tamanho);
+int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo);
 
 #endif //VERSAO1_PESQUISALOCAL_H
