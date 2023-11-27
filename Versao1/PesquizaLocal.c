@@ -27,10 +27,11 @@ void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **ed
     fclose(file);
 }
 
-void generates_initial_solution(int k, int numVertices, int numEdges, Edge *edges){
-    int solucao[k];
-    int custoTotal = 0;
-    int contadorVertices = 0;
-
-    
+// Função para imprimir o subconjunto de vértices
+void imprimirSubconjunto(int* subconjunto, int tamanho) {
+    printf("Subconjunto de vertices: ");
+    for (int i = 0; i < tamanho; ++i) {
+        printf("%d ", subconjunto[i]);
+    }
+    printf("\n");
 }

@@ -10,6 +10,7 @@ int main() {
     scanf("%s", arquivo);
     readFile(arquivo, &k, &numVertices, &numEdges, &edges);
 
+
     printf("k: %d\n", k);
     printf("Numero de vertices: %d\n", numVertices);
     printf("Numero de arestas: %d\n", numEdges);

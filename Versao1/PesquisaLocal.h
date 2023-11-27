@@ -10,7 +10,12 @@ typedef struct {
     int u, v, cost;
 } Edge;
 
+typedef struct {
+    int numVertices;
+    int numArestas;
+    Edge* arestas;
+} Grafo;
+
 void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges);
-void generates_initial_solution(int k, int numVertices, int numEdges, Edge *edges);
 
 #endif //VERSAO1_PESQUISALOCAL_H
