@@ -22,11 +22,8 @@ int main() {
 
     int* sub = geraSolucaoInicial(&k, &edges, &grafo);
     imprimirSubconjunto(sub, grafo->numVertices);
-    int *solucao_final = Hill_Climbing(sub, grafo, edges, &k);
-    imprimirSubconjunto(solucao_final, grafo->numVertices);
 
     free(edges);
     free(grafo);
-    free(solucao_final);
     return 0;
 }
