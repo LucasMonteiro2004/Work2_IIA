@@ -139,3 +139,7 @@ int *Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges) {
 
     return melhorSolucao;
 }
+
+void validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k){
+
+}
