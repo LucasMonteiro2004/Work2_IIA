@@ -35,7 +35,7 @@ void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **ed
 }
 
 void imprimirSubconjunto(int *subconjunto, int tamanho) {
-    printf("Subconjunto de vertices: ");
+    printf("Vertices: ");
     for (int i = 0; i < tamanho; ++i) {
         printf("%d ", subconjunto[i]);
     }
@@ -83,7 +83,7 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
         }
 
         if (contador == *k) {
-            printf("Custo total = %d\n", custoTotal);
+            printf("Custo inicial = %d\n", custoTotal);
             return solucaoInicial;
         }
     }
@@ -95,13 +95,24 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
 int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge **edges) {
     int *neighbor1 = (int *)malloc(grafo->numVertices * sizeof(int));
     memcpy(neighbor1, solucaoInicial, grafo->numVertices * sizeof(int));
+
     srand(time(NULL));
+
     int random_neighbor = rand() % (grafo->numVertices);
-    if (neighbor1[random_neighbor] == 1) {
+    int original_value = neighbor1[random_neighbor];
+
+    if (original_value == 1) {
         neighbor1[random_neighbor] = 0;
     } else {
         neighbor1[random_neighbor] = 1;
     }
+
+    int different_position = (random_neighbor + rand() % (grafo->numVertices - 1) + 1) % grafo->numVertices;
+
+    if (different_position != random_neighbor) {
+        neighbor1[different_position] = original_value;
+    }
+
     return neighbor1;
 }
 
@@ -123,6 +134,8 @@ int *Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges) {
             free(solucaoFinal);
         }
     } while (melhorCusto < nextCost);
+
+    printf("Custo Final = %d\n", melhorCusto);
 
     return melhorSolucao;
 }
