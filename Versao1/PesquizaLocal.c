@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include "PesquisaLocal.h"
 
 void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges, Grafo **grafo) {
@@ -90,6 +91,14 @@ int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo){
     return NULL;
 }
 
-void Hill_Climbing(int *solucaoInicial, int numVertices, int numInter){
+int* generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge *edges, int *k){
 
+}
+
+int* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge *edges, int *k) {
+    int tam = grafo->numVertices;
+    int *melhorSolucao = solucaoInicial;
+    int melhorCusto = calculaCustoTotal(melhorSolucao, edges, grafo->numArestas);
+
+    return melhorSolucao;
 }

@@ -17,5 +17,6 @@ typedef struct {
 void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges, Grafo **grafo);
 void imprimirSubconjunto(int* subconjunto, int tamanho);
 int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo);
+int* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge *edges, int *k);
 
 #endif //VERSAO1_PESQUISALOCAL_H
