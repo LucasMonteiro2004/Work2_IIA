@@ -94,7 +94,7 @@ int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo){
 int* generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge **edges){
     int *neighbor1 = solucaoInicial;
     srand(time(NULL));
-    int random_neighbor = rand() % grafo->numVertices;
+    int random_neighbor = rand() % (grafo->numVertices);
     if (neighbor1[random_neighbor] == 1){
         neighbor1[random_neighbor] = 0;
     }else{
