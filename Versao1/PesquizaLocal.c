@@ -83,7 +83,7 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
         }
 
         if (contador == *k) {
-            printf("Custo inicial = %d\n", custoTotal);
+            printf("Custo solucao inicial = %d\n", custoTotal);
             return solucaoInicial;
         }
     }
@@ -135,7 +135,7 @@ int *Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges) {
         }
     } while (melhorCusto < nextCost);
 
-    printf("Custo Final = %d\n", melhorCusto);
+    printf("Custo solucao Final = %d\n", melhorCusto);
 
     return melhorSolucao;
 }
