@@ -27,13 +27,14 @@ void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **ed
         (*edges)[i].cost = cost;
     }
 
+    *grafo = (Grafo *)malloc(sizeof(Grafo));  // Allocate memory for Grafo structure
     (*grafo)->numVertices = *numVertices;
     (*grafo)->numArestas = *numEdges;
 
     fclose(file);
 }
 
-void imprimirSubconjunto(int* subconjunto, int tamanho) {
+void imprimirSubconjunto(int *subconjunto, int tamanho) {
     printf("Subconjunto de vertices: ");
     for (int i = 0; i < tamanho; ++i) {
         printf("%d ", subconjunto[i]);
@@ -55,9 +56,9 @@ int calculaCustoTotal(int *solucao, Edge **edges, int numArestas) {
     return custoTotal;
 }
 
-int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo){
+int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
     int tam = (*grafo)->numVertices;
-    int *solucaoInicial = (int*)malloc(tam * sizeof(int));
+    int *solucaoInicial = (int *)malloc(tam * sizeof(int));
 
     for (int i = 0; i < tam; ++i) {
         solucaoInicial[i] = 0;
@@ -91,29 +92,35 @@ int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo){
     return NULL;
 }
 
-int* generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge **edges){
-    int *neighbor1 = solucaoInicial;
+int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge **edges) {
+    int *neighbor1 = (int *)malloc(grafo->numVertices * sizeof(int));
+    memcpy(neighbor1, solucaoInicial, grafo->numVertices * sizeof(int));
     srand(time(NULL));
     int random_neighbor = rand() % (grafo->numVertices);
-    if (neighbor1[random_neighbor] == 1){
+    if (neighbor1[random_neighbor] == 1) {
         neighbor1[random_neighbor] = 0;
-    }else{
+    } else {
         neighbor1[random_neighbor] = 1;
     }
     return neighbor1;
 }
 
-int* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges) {
-    int tam = grafo->numVertices , nextCost;
-    int *melhorSolucao = solucaoInicial;
-    int melhorCusto = calculaCustoTotal(melhorSolucao, edges, grafo->numArestas);
-    int *solucaoFinal;
+int *Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges) {
+    int melhorCusto = calculaCustoTotal(solucaoInicial, edges, grafo->numArestas);
+    int *melhorSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
+    memcpy(melhorSolucao, solucaoInicial, grafo->numVertices * sizeof(int));
+    int nextCost = 0;
+
     do {
-        solucaoFinal = generates_neighbor_1(solucaoInicial, grafo, edges);
+        int *solucaoFinal = generates_neighbor_1(melhorSolucao, grafo, edges);
         nextCost = calculaCustoTotal(solucaoFinal, edges, grafo->numArestas);
-        if (melhorCusto < nextCost) {
+
+        if (nextCost < melhorCusto) {
             melhorCusto = nextCost;
+            free(melhorSolucao);
             melhorSolucao = solucaoFinal;
+        } else {
+            free(solucaoFinal);
         }
     } while (melhorCusto < nextCost);
 

@@ -5,9 +5,9 @@ int main() {
     int k, numVertices, numEdges;
     Edge *edges;
     Grafo *grafo;
-    char arquivo[20];
 
     printf("Nome arquivo?");
+    char arquivo[20];
     scanf("%s", arquivo);
     readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
 
@@ -15,15 +15,19 @@ int main() {
     printf("Numero de vertices: %d\n", grafo->numVertices);
     printf("Numero de arestas: %d\n", grafo->numArestas);
 
-
     for (int i = 0; i < grafo->numArestas; i++) {
-        printf("Aresta %d: %c %d %d %d\n", i+1 ,edges[i].car, edges[i].u, edges[i].v, edges[i].cost);
+        printf("Aresta %d: %c %d %d %d\n", i + 1, edges[i].car, edges[i].u, edges[i].v, edges[i].cost);
     }
 
-    int* sub = geraSolucaoInicial(&k, &edges, &grafo);
+    int *sub = geraSolucaoInicial(&k, &edges, &grafo);
     imprimirSubconjunto(sub, grafo->numVertices);
+    int *Sol = Hill_Climbing(sub, grafo, &edges);
+    imprimirSubconjunto(Sol, grafo->numVertices);
 
     free(edges);
     free(grafo);
+    free(sub);
+    free(Sol);
+
     return 0;
 }
