@@ -92,13 +92,24 @@ int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo){
 }
 
 int* generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge *edges, int *k){
-
+    int *neighbor1 = solucaoInicial;
+    srand(time(NULL));
+    int random_neighbor = rand() % grafo->numVertices;
+    if (neighbor1[random_neighbor] == 1){
+        neighbor1[random_neighbor] = 0;
+    }else{
+        neighbor1[random_neighbor] = 1;
+    }
+    return neighbor1;
 }
 
 int* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge *edges, int *k) {
-    int tam = grafo->numVertices;
+    int tam = grafo->numVertices,  nextCost = 0;
     int *melhorSolucao = solucaoInicial;
     int melhorCusto = calculaCustoTotal(melhorSolucao, edges, grafo->numArestas);
 
+    do {
+
+    }while (melhorCusto < nextCost);
     return melhorSolucao;
 }
