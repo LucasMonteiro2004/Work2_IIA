@@ -23,6 +23,7 @@ int main() {
     imprimirSubconjunto(sub, grafo->numVertices);
     int *Sol = Hill_Climbing(sub, grafo, &edges);
     imprimirSubconjunto(Sol, grafo->numVertices);
+    validateSoluction(Sol, grafo, &edges, &k);
 
     free(edges);
     free(grafo);
