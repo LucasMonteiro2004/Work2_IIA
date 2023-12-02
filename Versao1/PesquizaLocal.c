@@ -146,7 +146,7 @@ void validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
     for (int i = 0; i < tam; ++i) {
         if(melhorSolucao[i] == 1){
             contador++;
-            if(melhorSolucao[i] > grafo->numVertices){
+            if(i > grafo->numVertices){
                 printf("Solucao Invalida\n");
                 return;
             }
