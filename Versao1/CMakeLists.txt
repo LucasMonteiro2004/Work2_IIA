@@ -6,6 +6,8 @@ set(CMAKE_C_STANDARD 11)
 add_executable(Versao1 main.c
         PesquizaLocal.c
         PesquisaLocal.h
-        "AlgoritmoEvolutivo .c"
-        "AlgoritmoEvolutivo .h"
+        AbordagensHíbridas.c
+        AbordagensHíbridas.h
+        AlgoritmoEvolutivo.c
+        AlgoritmoEvolutivo.h
 )

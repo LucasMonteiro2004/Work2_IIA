@@ -1,7 +1,3 @@
-//
-// Created by monte on 03/12/2023.
-//
-
 #ifndef VERSAO1_ABORDAGENSHÍBRIDAS_H
 #define VERSAO1_ABORDAGENSHÍBRIDAS_H
 
