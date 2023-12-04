@@ -158,5 +158,9 @@ void validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
         return;
     }
 
+    for (int i = 0; i < (*grafo).numArestas; ++i) {
+        int pos1 = (*edges)[i].u - 1, pos2 = (*edges)[i].v - 1;
+    }
+
     printf("Solucao Valida.\n");
 }
