@@ -159,9 +159,9 @@ int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
         return 0;
     }
 
-    for (int j = 0; j < *k; ++j) {
-            if(melhorSolucao[j] == 1){
-                vetor_comparacao[j][1] = j + 1;
+    for (int i = 0; i < *k; ++i) {
+            if(melhorSolucao[i] == 1){
+                vetor_comparacao[i][1] = i + 1;
         }
     }
 
