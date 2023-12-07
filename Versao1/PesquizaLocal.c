@@ -92,6 +92,46 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
     return NULL;
 }
 
+int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo, Edge **edges){
+    int *neighbor2 = (int *)malloc(grafo->numVertices * sizeof(int));
+    memcpy(neighbor2, solucaoInicial, grafo->numVertices * sizeof(int));
+
+    srand(time(NULL));
+
+    int random_neighbor1 = rand() % (grafo->numVertices);
+    int random_neighbor2 = (random_neighbor1 + rand() % (grafo->numVertices - 1) + 1) % grafo->numVertices;
+
+    int original_value1 = neighbor2[random_neighbor1];
+    int original_value2 = neighbor2[random_neighbor2];
+
+    if (original_value1 == 1) {
+        neighbor2[random_neighbor1] = 0;
+    } else {
+        neighbor2[random_neighbor1] = 1;
+    }
+
+    if (original_value2 == 1) {
+        neighbor2[random_neighbor2] = 0;
+    } else {
+        neighbor2[random_neighbor2] = 1;
+    }
+
+    int different_position1, different_position2;
+
+    do {
+        different_position1 = (random_neighbor1 + rand() % (grafo->numVertices - 1) + 1) % grafo->numVertices;
+    } while (different_position1 == random_neighbor1 || different_position1 == random_neighbor2);
+
+    do {
+        different_position2 = (random_neighbor2 + rand() % (grafo->numVertices - 1) + 1) % grafo->numVertices;
+    } while (different_position2 == random_neighbor1 || different_position2 == random_neighbor2 || different_position2 == different_position1);
+
+    neighbor2[different_position1] = original_value1;
+    neighbor2[different_position2] = original_value2;
+
+    return neighbor2;
+}
+
 int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge **edges) {
     int *neighbor1 = (int *)malloc(grafo->numVertices * sizeof(int));
     memcpy(neighbor1, solucaoInicial, grafo->numVertices * sizeof(int));
