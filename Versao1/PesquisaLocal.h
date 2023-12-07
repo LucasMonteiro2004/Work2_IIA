@@ -6,7 +6,7 @@
 
 typedef struct {
     char car;
-    int u, v, cost;
+    int u, v, cost, haveConection;
 } Edge;
 
 typedef struct {
