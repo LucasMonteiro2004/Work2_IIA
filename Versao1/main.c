@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "PesquisaLocal.h"
+#include "AlgoritmoEvolutivo.h"
+#include "AbordagensHíbridas.h"
 
 int main() {
     int k, numVertices, numEdges;

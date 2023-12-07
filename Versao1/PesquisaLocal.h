@@ -19,5 +19,7 @@ void imprimirSubconjunto(int* subconjunto, int tamanho);
 int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo);
 int* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges);
 int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k);
+int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo, Edge **edges);
+int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge **edges);
 
 #endif //VERSAO1_PESQUISALOCAL_H
