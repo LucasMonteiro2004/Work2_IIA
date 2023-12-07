@@ -156,7 +156,7 @@ int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge **edges) {
     return neighbor1;
 }
 
-int *Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges) {
+int *Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k) {
     int melhorCusto = calculaCustoTotal(solucaoInicial, edges, grafo->numArestas);
     int *melhorSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
     memcpy(melhorSolucao, solucaoInicial, grafo->numVertices * sizeof(int));
