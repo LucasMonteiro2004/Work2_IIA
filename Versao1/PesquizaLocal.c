@@ -142,6 +142,7 @@ int *Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges) {
 
 int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
     int tam = grafo->numArestas, contador = 0;
+    int vetor_comaracao_2[grafo->numArestas * 2];
     int vetor_comparacao[*k];
 
     for (int i = 0; i < tam; ++i) {
@@ -166,8 +167,9 @@ int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
     }
 
     for (int i = 0; i < (*grafo).numArestas; ++i) {
-        int pos1 = (*edges)[i].u - 1, pos2 = (*edges)[i].v - 1;
-
+        int pos1 = (*edges)[i].u , pos2 = (*edges)[i].v;
+        vetor_comaracao_2[i] = pos1;
+        vetor_comaracao_2[i+1] = pos2;
     }
 
     printf("Solucao Valida.\n");
