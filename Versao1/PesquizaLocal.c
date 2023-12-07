@@ -140,7 +140,7 @@ int *Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges) {
     return melhorSolucao;
 }
 
-void validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
+int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
     int tam = grafo->numArestas, contador = 0;
     int vetor_comparacao[*k];
 
@@ -149,14 +149,14 @@ void validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
             contador++;
             if(i > grafo->numVertices){
                 printf("Solucao Invalida\n");
-                return;
+                return 0;
             }
         }
     }
 
     if(contador != *k){
         printf("Solucao Invalida\n");
-        return;
+        return 0;
     }
 
     for (int j = 0; j < *k; ++j) {
@@ -171,4 +171,5 @@ void validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
     }
 
     printf("Solucao Valida.\n");
+    return 1;
 }
