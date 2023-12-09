@@ -156,20 +156,24 @@ int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge **edges) {
     return neighbor1;
 }
 
-int *Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k) {
+Resultado* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k) {
+    Resultado* resultado = (Resultado*)malloc(sizeof(Resultado));
     int melhorCusto = calculaCustoTotal(solucaoInicial, edges, grafo->numArestas);
-    int *melhorSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
-    memcpy(melhorSolucao, solucaoInicial, grafo->numVertices * sizeof(int));
-    int nextCost = 0;
+    resultado->melhorSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
+    resultado->melhorSolucao2 = (int *)malloc(grafo->numVertices * sizeof(int));
+    memcpy(resultado->melhorSolucao, solucaoInicial, grafo->numVertices * sizeof(int));
+    int nextCost = 0, cosPreview = 0;
 
     do {
-        int *solucaoFinal = generates_neighbor_1(melhorSolucao, grafo, edges);
+        int *solucaoFinal = generates_neighbor_1(resultado->melhorSolucao, grafo, edges);
         nextCost = calculaCustoTotal(solucaoFinal, edges, grafo->numArestas);
 
         if (nextCost < melhorCusto) {
+            cosPreview = melhorCusto;
+            resultado->melhorSolucao2 = resultado->melhorSolucao;
             melhorCusto = nextCost;
-            free(melhorSolucao);
-            melhorSolucao = solucaoFinal;
+            free(resultado->melhorSolucao);
+            resultado->melhorSolucao = solucaoFinal;
         } else {
             free(solucaoFinal);
         }
@@ -177,7 +181,7 @@ int *Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k) {
 
     printf("Custo solucao Final = %d\n", melhorCusto);
 
-    return melhorSolucao;
+    return resultado;
 }
 
 int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {

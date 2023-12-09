@@ -7,6 +7,7 @@ int main() {
     int k, numVertices, numEdges;
     Edge *edges;
     Grafo *grafo;
+    Resultado* sol = (Resultado*)malloc(sizeof(Resultado));;
 
     printf("Nome arquivo?");
     char arquivo[20];
@@ -23,14 +24,13 @@ int main() {
 
     int *sub = geraSolucaoInicial(&k, &edges, &grafo);
     imprimirSubconjunto(sub, grafo->numVertices);
-    int *Sol = Hill_Climbing(sub, grafo, &edges, &k);
-    imprimirSubconjunto(Sol, grafo->numVertices);
-    validateSoluction(Sol, grafo, &edges, &k);
+    sol = Hill_Climbing(sub, grafo, &edges, &k);
+    imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
+    validateSoluction(sol->melhorSolucao, grafo, &edges, &k);
 
     free(edges);
     free(grafo);
     free(sub);
-    free(Sol);
 
     return 0;
 }
