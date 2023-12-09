@@ -1,6 +1,6 @@
 #include "AlgoritmoEvolutivo.h"
 
-int* algoritmoRecombinacao(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo, Edge** edges, int* k) {
+int* algoritmoRecombinacao_Single_Point_Crossover(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo, Edge** edges, int* k) {
     int* novaSolucao = (int*)malloc(grafo->numVertices * sizeof(int));
     int pontoCorte = rand() % grafo->numVertices;
 
@@ -13,7 +13,7 @@ int* algoritmoRecombinacao(int* melhorSolucao1, int* melhorSolucao2, Grafo* graf
     return novaSolucao;
 }
 
-int* algoritmoMutacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k) {
+int* algoritmoMutacao_Troca(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k) {
     int* solucaoMutada = (int*)malloc(grafo->numVertices * sizeof(int));
     memcpy(solucaoMutada, melhorSolucao, grafo->numVertices * sizeof(int));
 
