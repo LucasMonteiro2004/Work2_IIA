@@ -3,8 +3,11 @@
 #include "AlgoritmoEvolutivo.h"
 #include "AbordagensHíbridas.h"
 
+#define INTER 10
+
 int main() {
-    int k, numVertices, numEdges, inter = 10;
+    int k, numVertices, numEdges;
+    int *sub;
     Edge *edges;
     Grafo *grafo;
     Resultado* sol = (Resultado*)malloc(sizeof(Resultado));
@@ -22,18 +25,13 @@ int main() {
         printf("Aresta %d: %c %d %d %d\n", i + 1, edges[i].car, edges[i].u, edges[i].v, edges[i].cost);
     }
 
-    /*
-    for(int i = 0; i < inter; i++){
-
+    for(int i = 0; i < INTER; i++){
+        sub = geraSolucaoInicial(&k, &edges, &grafo);
+        imprimirSubconjunto(sub, grafo->numVertices);
+        sol = Hill_Climbing_2(sub, grafo, &edges, &k);
+        imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
+        validateSoluction(sol->melhorSolucao, grafo, &edges, &k);
     }
-    */
-
-    int *sub = geraSolucaoInicial(&k, &edges, &grafo);
-    imprimirSubconjunto(sub, grafo->numVertices);
-    sol = Hill_Climbing(sub, grafo, &edges, &k);
-    imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
-    validateSoluction(sol->melhorSolucao, grafo, &edges, &k);
-
 
     free(edges);
     free(grafo);
