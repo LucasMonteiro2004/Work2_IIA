@@ -95,13 +95,3 @@ int* algoritmoMutacao_Insercao(int* melhorSolucao, Grafo* grafo, Edge** edges, i
 
     return novaSolucao;
 }
-
-Penalizacao penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
-    Penalizacao *p;
-    p->melhorsolucao = melhorSolucao;
-    p->cost = calculaCustoTotal(melhorSolucao, edges, grafo->numArestas);
-    if((validateSoluction(p->melhorsolucao, grafo, edges, k)) != 1){
-        p->cost = 10000;
-    }
-    return *p;
-}

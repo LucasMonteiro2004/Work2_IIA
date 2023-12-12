@@ -226,3 +226,17 @@ int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
         }
     }
 }
+
+int* reparacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
+    while ((validateSoluction(melhorSolucao, grafo, edges, k) != 1)){
+        melhorSolucao = generates_neighbor_2(melhorSolucao, grafo, edges);
+    }
+    return melhorSolucao;
+}
+
+Penalizacao penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
+    Penalizacao *p;
+    p->melhorsolucao = melhorSolucao;
+    p->cost = 10000;
+    return *p;
+}

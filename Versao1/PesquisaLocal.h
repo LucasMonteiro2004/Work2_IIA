@@ -21,6 +21,11 @@ typedef struct {
     int *melhorSolucao2;
 } Resultado;
 
+typedef struct {
+    int* melhorsolucao;
+    int cost;
+}Penalizacao;
+
 void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges, Grafo **grafo);
 void imprimirSubconjunto(int* subconjunto, int tamanho);
 int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo);
@@ -29,5 +34,7 @@ int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k);
 int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo, Edge **edges);
 int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge **edges);
 int calculaCustoTotal(int *solucao, Edge **edges, int numArestas);
+Penalizacao penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k);
+int* reparacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k);
 
 #endif //VERSAO1_PESQUISALOCAL_H
