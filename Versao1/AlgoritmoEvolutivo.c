@@ -94,3 +94,9 @@ int* algoritmoMutacao_Insercao(int* melhorSolucao, Grafo* grafo, Edge** edges, i
 
     return novaSolucao;
 }
+
+int* penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
+    if((validateSoluction(melhorSolucao, grafo, &edges, k)) != 1){
+
+    }
+}
