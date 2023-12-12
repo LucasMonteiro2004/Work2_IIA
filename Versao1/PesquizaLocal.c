@@ -184,6 +184,34 @@ Resultado* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k
     return resultado;
 }
 
+Resultado* Hill_Climbing_2(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k){
+    Resultado* resultado = (Resultado*)malloc(sizeof(Resultado));
+    int melhorCusto = calculaCustoTotal(solucaoInicial, edges, grafo->numArestas);
+    resultado->melhorSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
+    resultado->melhorSolucao2 = (int *)malloc(grafo->numVertices * sizeof(int));
+    memcpy(resultado->melhorSolucao, solucaoInicial, grafo->numVertices * sizeof(int));
+    int nextCost = 0, cosPreview = 0;
+
+    do {
+        int *solucaoFinal = generates_neighbor_2(resultado->melhorSolucao, grafo, edges);
+        nextCost = calculaCustoTotal(solucaoFinal, edges, grafo->numArestas);
+
+        if (nextCost < melhorCusto) {
+            cosPreview = melhorCusto;
+            resultado->melhorSolucao2 = resultado->melhorSolucao;
+            melhorCusto = nextCost;
+            free(resultado->melhorSolucao);
+            resultado->melhorSolucao = solucaoFinal;
+        } else {
+            free(solucaoFinal);
+        }
+    } while (melhorCusto < nextCost);
+
+    printf("Custo solucao Final = %d\n", melhorCusto);
+
+    return resultado;
+}
+
 int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
     int tam = grafo->numArestas, contador = 0;
     int vetor_comparacao[*k][2];
