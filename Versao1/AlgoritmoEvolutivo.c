@@ -1,4 +1,5 @@
 #include "AlgoritmoEvolutivo.h"
+#include "PesquisaLocal.h"
 
 int* algoritmoRecombinacao_Single_Point_Crossover(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo, Edge** edges, int* k) {
     int* novaSolucao = (int*)malloc(grafo->numVertices * sizeof(int));
@@ -95,8 +96,12 @@ int* algoritmoMutacao_Insercao(int* melhorSolucao, Grafo* grafo, Edge** edges, i
     return novaSolucao;
 }
 
-int* penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
-    if((validateSoluction(melhorSolucao, grafo, &edges, k)) != 1){
-
+Penalizacao penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
+    Penalizacao *p;
+    p->melhorsolucao = melhorSolucao;
+    p->cost = calculaCustoTotal(melhorSolucao, edges, grafo->numArestas);
+    if((validateSoluction(p->melhorsolucao, grafo, edges, k)) != 1){
+        p->cost = 10000;
     }
+    return *p;
 }

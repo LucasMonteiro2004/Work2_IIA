@@ -6,10 +6,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct {
+    int* melhorsolucao;
+    int cost;
+}Penalizacao;
+
 int* algoritmoRecombinacao_Single_Point_Crossover(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo, Edge** edges, int* k);
 int* algoritmoRecombinacao_double_Point_Crossover(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo, Edge** edges, int* k);
 int* algoritmoMutacao_Troca(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k);
 int* algoritmoMutacao_Insercao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k);
-int* penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k);
+Penalizacao penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k);
 
 #endif //VERSAO1_ALGORITMOEVOLUTIVO_H

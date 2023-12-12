@@ -28,5 +28,6 @@ Resultado* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k
 int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k);
 int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo, Edge **edges);
 int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge **edges);
+int calculaCustoTotal(int *solucao, Edge **edges, int numArestas);
 
 #endif //VERSAO1_PESQUISALOCAL_H
