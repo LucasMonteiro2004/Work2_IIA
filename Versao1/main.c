@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include "PesquisaLocal.h"
-#include "AlgoritmoEvolutivo.h"
-#include "AbordagensHíbridas.h"
 
 #define INTER 10
 
@@ -10,7 +8,7 @@ int main() {
     int *sub;
     Edge *edges;
     Grafo *grafo;
-    Resultado* sol = (Resultado*)malloc(sizeof(Resultado));
+    Resultado* sol[INTER];
 
     printf("Nome arquivo?");
     char arquivo[20];
@@ -28,9 +26,12 @@ int main() {
     for(int i = 0; i < INTER; i++){
         sub = geraSolucaoInicial(&k, &edges, &grafo);
         imprimirSubconjunto(sub, grafo->numVertices);
-        sol = Hill_Climbing_2(sub, grafo, &edges, &k);
-        imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
-        validateSoluction(sol->melhorSolucao, grafo, &edges, &k);
+        sol[i] = Hill_Climbing_2(sub, grafo, &edges, &k);
+        imprimirSubconjunto(sol[i]->melhorSolucao, grafo->numVertices);
+        validateSoluction(sol[i]->melhorSolucao, grafo, &edges, &k);
+        free(sol[i]->melhorSolucao);
+        free(sol[i]->melhorSolucao2);
+        free(sol[i]);
     }
 
     free(edges);

@@ -214,9 +214,9 @@ int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
     }
 
     for (int i = 0; i < *k; ++i) {
-        for (int j = 0; j < grafo->numArestas; ++i) {
-            if(edges[j]->u == vetor_comparacao[i][0] && edges[j]->v == vetor_comparacao[i][0]){
-                vetor_comparacao[j][1] = 1;
+        for (int j = 0; j < grafo->numArestas; ++j) {
+            if (edges[j]->u == vetor_comparacao[i][0] && edges[j]->v == vetor_comparacao[i][0]) {
+                vetor_comparacao[i][1] = 1;
             }
         }
     }
@@ -229,6 +229,8 @@ int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
             return 1;
         }
     }
+
+    return 1;
 }
 
 int* reparacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
