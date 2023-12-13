@@ -29,8 +29,6 @@ int main() {
         sol[i] = Hill_Climbing_2(sub, grafo, &edges, &k);
         imprimirSubconjunto(sol[i]->melhorSolucao, grafo->numVertices);
         validateSoluction(sol[i]->melhorSolucao, grafo, &edges, &k);
-        free(sol[i]->melhorSolucao);
-        free(sol[i]->melhorSolucao2);
         free(sol[i]);
     }
 

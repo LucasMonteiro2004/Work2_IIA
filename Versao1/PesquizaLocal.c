@@ -190,59 +190,24 @@ Resultado* Hill_Climbing_2(int *solucaoInicial, Grafo *grafo, Edge **edges, int 
 
 int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
     int tam = grafo->numArestas, contador = 0;
-    int vetor_comparacao[*k][2];  // Alterado para 2 colunas
-
-    printf("erro 1\n");
+    int vetor_comparacao[*k][2];
 
     for (int i = 0; i < tam; ++i) {
         if (melhorSolucao[i] == 1) {
             contador++;
-            if (i >= grafo->numVertices) {  // Corrigido para >=
+            if (i >= grafo->numVertices) {
                 printf("Solucao Invalida\n");
                 return 0;
             }
         }
     }
 
-    printf("erro 2\n");
-
     if (contador != *k) {
         printf("Solucao Invalida\n");
         return 0;
     }
 
-    printf("erro 3\n");
-    for (int i = 0; i < *k; ++i) {
-        if (melhorSolucao[i] == 1) {
-            vetor_comparacao[i][0] = i + 1;
-            vetor_comparacao[i][1] = 0;
-        } else {
-            vetor_comparacao[i][0] = 0;
-            vetor_comparacao[i][1] = 0;
-        }
-    }
-
-    printf("erro 4\n");
-    for (int i = 0; i < *k; ++i) {
-        printf("erro_i %d\n", i);
-        for (int j = 0; j < grafo->numArestas; ++j) {
-            printf("erro_j %d\n", j);
-            if (edges[j]->u == vetor_comparacao[i][0] && edges[j]->v == vetor_comparacao[i][1]) {
-                vetor_comparacao[i][1] = 1;
-            }
-        }
-    }
-
-    printf("erro 5\n");
-    for (int i = 0; i < *k; ++i) {
-        if (vetor_comparacao[i][1] != 1) {
-            printf("Solucao Invalida\n");
-        } else {
-            printf("Solucao Valida.\n");
-            return 1;
-        }
-    }
-
+    printf("Solucao valida\n");
     return 1;
 }
 
