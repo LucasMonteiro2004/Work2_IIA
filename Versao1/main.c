@@ -4,6 +4,7 @@
 #define INTER 10
 
 int main() {
+    srand(time(NULL));
     int k, numVertices, numEdges;
     int *sub;
     Edge *edges;

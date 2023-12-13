@@ -64,7 +64,6 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
         solucaoInicial[i] = 0;
     }
 
-    srand(time(NULL));
     int custoTotal = 0;
     int numeroAleatorio = rand() % 3;
 
@@ -91,19 +90,17 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
     free(solucaoInicial);
     return NULL;
 }
+
 int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo) {
     int *neighbor2 = (int *)malloc(grafo->numVertices * sizeof(int));
     memcpy(neighbor2, solucaoInicial, grafo->numVertices * sizeof(int));
-
-    srand(time(NULL)); // Nota: Idealmente, srand deveria ser chamado apenas uma vez, no início do programa
 
     int random_neighbor1 = rand() % grafo->numVertices;
     int random_neighbor2;
     do {
         random_neighbor2 = rand() % grafo->numVertices;
-    } while (random_neighbor2 == random_neighbor1); // Garante que random_neighbor2 seja diferente de random_neighbor1
+    } while (random_neighbor2 == random_neighbor1);
 
-    // Trocando os valores entre random_neighbor1 e random_neighbor2
     int temp = neighbor2[random_neighbor1];
     neighbor2[random_neighbor1] = neighbor2[random_neighbor2];
     neighbor2[random_neighbor2] = temp;
@@ -115,8 +112,6 @@ int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo) {
 int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo) {
     int *neighbor1 = (int *)malloc(grafo->numVertices * sizeof(int));
     memcpy(neighbor1, solucaoInicial, grafo->numVertices * sizeof(int));
-
-    srand(time(NULL));
 
     int pos1 = rand() % grafo->numVertices;
     int pos2;
