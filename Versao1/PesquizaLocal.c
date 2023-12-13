@@ -91,67 +91,43 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
     free(solucaoInicial);
     return NULL;
 }
-
-int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo, Edge **edges){
+int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo) {
     int *neighbor2 = (int *)malloc(grafo->numVertices * sizeof(int));
     memcpy(neighbor2, solucaoInicial, grafo->numVertices * sizeof(int));
 
-    srand(time(NULL));
+    srand(time(NULL)); // Nota: Idealmente, srand deveria ser chamado apenas uma vez, no início do programa
 
-    int random_neighbor1 = rand() % (grafo->numVertices);
-    int random_neighbor2 = (random_neighbor1 + rand() % (grafo->numVertices - 1) + 1) % grafo->numVertices;
-
-    int original_value1 = neighbor2[random_neighbor1];
-    int original_value2 = neighbor2[random_neighbor2];
-
-    if (original_value1 == 1) {
-        neighbor2[random_neighbor1] = 0;
-    } else {
-        neighbor2[random_neighbor1] = 1;
-    }
-
-    if (original_value2 == 1) {
-        neighbor2[random_neighbor2] = 0;
-    } else {
-        neighbor2[random_neighbor2] = 1;
-    }
-
-    int different_position1, different_position2;
-
+    int random_neighbor1 = rand() % grafo->numVertices;
+    int random_neighbor2;
     do {
-        different_position1 = (random_neighbor1 + rand() % (grafo->numVertices - 1) + 1) % grafo->numVertices;
-    } while (different_position1 == random_neighbor1 || different_position1 == random_neighbor2);
+        random_neighbor2 = rand() % grafo->numVertices;
+    } while (random_neighbor2 == random_neighbor1); // Garante que random_neighbor2 seja diferente de random_neighbor1
 
-    do {
-        different_position2 = (random_neighbor2 + rand() % (grafo->numVertices - 1) + 1) % grafo->numVertices;
-    } while (different_position2 == random_neighbor1 || different_position2 == random_neighbor2 || different_position2 == different_position1);
-
-    neighbor2[different_position1] = original_value1;
-    neighbor2[different_position2] = original_value2;
+    // Trocando os valores entre random_neighbor1 e random_neighbor2
+    int temp = neighbor2[random_neighbor1];
+    neighbor2[random_neighbor1] = neighbor2[random_neighbor2];
+    neighbor2[random_neighbor2] = temp;
 
     return neighbor2;
 }
 
-int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo, Edge **edges) {
+
+int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo) {
     int *neighbor1 = (int *)malloc(grafo->numVertices * sizeof(int));
     memcpy(neighbor1, solucaoInicial, grafo->numVertices * sizeof(int));
 
     srand(time(NULL));
 
-    int random_neighbor = rand() % (grafo->numVertices);
-    int original_value = neighbor1[random_neighbor];
+    int pos1 = rand() % grafo->numVertices;
+    int pos2;
+    do {
+        pos2 = rand() % grafo->numVertices;
+    } while (pos2 == pos1); // Garantindo que pos2 seja diferente de pos1
 
-    if (original_value == 1) {
-        neighbor1[random_neighbor] = 0;
-    } else {
-        neighbor1[random_neighbor] = 1;
-    }
-
-    int different_position = (random_neighbor + rand() % (grafo->numVertices - 1) + 1) % grafo->numVertices;
-
-    if (different_position != random_neighbor) {
-        neighbor1[different_position] = original_value;
-    }
+    // Trocando os valores
+    int temp = neighbor1[pos1];
+    neighbor1[pos1] = neighbor1[pos2];
+    neighbor1[pos2] = temp;
 
     return neighbor1;
 }
@@ -165,7 +141,7 @@ Resultado* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k
     int nextCost = 0, cosPreview = 0;
 
     do {
-        int *solucaoFinal = generates_neighbor_1(resultado->melhorSolucao, grafo, edges);
+        int *solucaoFinal = generates_neighbor_1(resultado->melhorSolucao, grafo);
         nextCost = calculaCustoTotal(solucaoFinal, edges, grafo->numArestas);
 
         if (nextCost < melhorCusto) {
@@ -193,7 +169,7 @@ Resultado* Hill_Climbing_2(int *solucaoInicial, Grafo *grafo, Edge **edges, int 
     int nextCost = 0, cosPreview = 0;
 
     do {
-        int *solucaoFinal = generates_neighbor_2(resultado->melhorSolucao, grafo, edges);
+        int *solucaoFinal = generates_neighbor_2(resultado->melhorSolucao, grafo);
         nextCost = calculaCustoTotal(solucaoFinal, edges, grafo->numArestas);
 
         if (nextCost < melhorCusto) {
@@ -257,7 +233,7 @@ int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
 
 int* reparacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
     while ((validateSoluction(melhorSolucao, grafo, edges, k) != 1)){
-        melhorSolucao = generates_neighbor_2(melhorSolucao, grafo, edges);
+        melhorSolucao = generates_neighbor_2(melhorSolucao, grafo);
     }
     return melhorSolucao;
 }
