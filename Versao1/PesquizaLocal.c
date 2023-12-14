@@ -138,7 +138,7 @@ Resultado* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k
         int *solucaoFinal = generates_neighbor_1(resultado->melhorSolucao, grafo);
         nextCost = calculaCustoTotal(solucaoFinal, edges, grafo->numArestas);
 
-        if (nextCost <= melhorCusto) {
+        if (nextCost < melhorCusto) {
             cosPreview = melhorCusto;
             resultado->melhorSolucao2 = resultado->melhorSolucao;
             melhorCusto = nextCost;
@@ -166,7 +166,7 @@ Resultado* Hill_Climbing_2(int *solucaoInicial, Grafo *grafo, Edge **edges, int 
         int *solucaoFinal = generates_neighbor_2(resultado->melhorSolucao, grafo);
         nextCost = calculaCustoTotal(solucaoFinal, edges, grafo->numArestas);
 
-        if (nextCost <= melhorCusto) {
+        if (nextCost < melhorCusto) {
             cosPreview = melhorCusto;
             resultado->melhorSolucao2 = resultado->melhorSolucao;
             melhorCusto = nextCost;
