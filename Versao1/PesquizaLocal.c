@@ -184,9 +184,8 @@ Resultado* Hill_Climbing_2(int *solucaoInicial, Grafo *grafo, Edge **edges, int 
 
 int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
     int tam = grafo->numVertices, contador = 0;
-    int vetor_verificacao[*k][3];
-    int verticies[*k];
 
+    // Verifica os vértices selecionados na melhorSolucao
     for (int i = 0; i < tam; ++i) {
         if (melhorSolucao[i] == 1) {
             contador++;
@@ -197,9 +196,31 @@ int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
         }
     }
 
+    // Se o número de vértices selecionados é diferente de k, a solução é inválida
     if (contador != *k) {
         printf("Solucao Invalida\n");
         return 0;
+    }
+
+    // Verifica se cada vértice selecionado está conectado a pelo menos um outro
+    for (int i = 0; i < tam; ++i) {
+        if (melhorSolucao[i] == 1) {
+            int isConnected = 0;
+            // Verifica todas as arestas para encontrar uma conexão
+            for (int j = 0; j < grafo->numArestas; ++j) {
+                int pos1 = (*edges)[j].u - 1;
+                int pos2 = (*edges)[j].v - 1;
+                if ((i == pos1 || i == pos2) && melhorSolucao[pos1] == 1 && melhorSolucao[pos2] == 1) {
+                    isConnected = 1;
+                    break; // Uma conexão encontrada é suficiente
+                }
+            }
+            // Se não encontrou nenhuma conexão, a solução é inválida
+            if (!isConnected) {
+                printf("Solucao Invalida - Vertice %d nao esta conectado a outro vertice selecionado\n", i + 1);
+                return 0;
+            }
+        }
     }
 
     printf("Solucao valida\n");
