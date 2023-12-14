@@ -183,8 +183,9 @@ Resultado* Hill_Climbing_2(int *solucaoInicial, Grafo *grafo, Edge **edges, int 
 }
 
 int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
-    int tam = grafo->numArestas, contador = 0;
-    int vetor_comparacao[*k][2];
+    int tam = grafo->numVertices, contador = 0;
+    int vetor_verificacao[*k][3];
+    int verticies[*k];
 
     for (int i = 0; i < tam; ++i) {
         if (melhorSolucao[i] == 1) {
