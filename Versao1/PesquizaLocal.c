@@ -147,7 +147,7 @@ Resultado* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k
         } else {
             free(solucaoFinal);
         }
-    } while (melhorCusto < nextCost && resultado->melhorSolucao == solucaoInicial);
+    } while (melhorCusto <= nextCost && resultado->melhorSolucao == solucaoInicial);
 
     printf("Custo solucao Final = %d\n", melhorCusto);
 
@@ -175,7 +175,7 @@ Resultado* Hill_Climbing_2(int *solucaoInicial, Grafo *grafo, Edge **edges, int 
         } else {
             free(solucaoFinal);
         }
-    } while (melhorCusto < nextCost && resultado->melhorSolucao == solucaoInicial);
+    } while (melhorCusto <= nextCost && resultado->melhorSolucao == solucaoInicial);
 
     printf("Custo solucao Final = %d\n", melhorCusto);
 
