@@ -64,9 +64,9 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
     }
 
     int custoTotal = 0;
-    int numeroAleatorio = rand() % 3;
+    //int numeroAleatorio = rand() % 3;
 
-    for (int i = numeroAleatorio; i < (*grafo)->numArestas; ++i) {
+    for (int i = 0; i < (*grafo)->numArestas; ++i) {
         int pos1 = (*edges)[i].u - 1, pos2 = (*edges)[i].v - 1;
         solucaoInicial[pos1] = 1;
         solucaoInicial[pos2] = 1;
