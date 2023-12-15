@@ -159,6 +159,7 @@ Resultado* Hill_Climbing_2(int *solucaoInicial, Grafo *grafo, Edge **edges, int 
     int melhorCusto = calculaCustoTotal(solucaoInicial, edges, grafo->numArestas);
     resultado->melhorSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
     resultado->melhorSolucao2 = (int *)malloc(grafo->numVertices * sizeof(int));
+    resultado->solucaoInicial = (int *)malloc(grafo->numVertices * sizeof(int));
     memcpy(resultado->melhorSolucao, solucaoInicial, grafo->numVertices * sizeof(int));
     int nextCost = 0, cosPreview = 0;
 
@@ -178,12 +179,21 @@ Resultado* Hill_Climbing_2(int *solucaoInicial, Grafo *grafo, Edge **edges, int 
     } while (melhorCusto <= nextCost && resultado->melhorSolucao == solucaoInicial);
 
     printf("Custo solucao Final = %d\n", melhorCusto);
-
+    resultado->custo_melhor_solucao = calculaCustoTotal(resultado->melhorSolucao, edges, grafo->numArestas);
+    resultado->solucaoInicial = solucaoInicial;
     return resultado;
 }
 
-int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k) {
+int validateSoluction(Resultado * resultado, Grafo *grafo, Edge **edges, int *k) {
     int tam = grafo->numVertices, contador = 0;
+    int *melhorSolucao = resultado->melhorSolucao;
+
+    // não aceita soluções de custo igual
+    if(resultado->melhorSolucao == resultado->solucaoInicial ||
+    resultado->custo_melhor_solucao == calculaCustoTotal(resultado->solucaoInicial, edges, grafo->numArestas)){
+        printf("Solucao Invalida por custo ou solucao incial = solucao final\n");
+        return 0;
+    }
 
     // Verifica os vértices selecionados na melhorSolucao
     for (int i = 0; i < tam; ++i) {

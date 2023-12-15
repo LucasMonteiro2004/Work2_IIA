@@ -19,6 +19,8 @@ typedef struct {
 typedef struct {
     int *melhorSolucao;
     int *melhorSolucao2;
+    int *solucaoInicial;
+    int custo_melhor_solucao;
 } Resultado;
 
 typedef struct {
@@ -31,7 +33,7 @@ void imprimirSubconjunto(int* subconjunto, int tamanho);
 int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo);
 Resultado* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k);
 Resultado* Hill_Climbing_2(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k);
-int validateSoluction(int *melhorSolucao, Grafo *grafo, Edge **edges, int *k);
+int validateSoluction(Resultado *resultado, Grafo *grafo, Edge **edges, int *k);
 int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo);
 int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo);
 int calculaCustoTotal(int *solucao, Edge **edges, int numArestas);

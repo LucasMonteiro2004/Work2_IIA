@@ -29,7 +29,7 @@ int main() {
         imprimirSubconjunto(sub, grafo->numVertices);
         sol[i] = Hill_Climbing_2(sub, grafo, &edges, &k);
         imprimirSubconjunto(sol[i]->melhorSolucao, grafo->numVertices);
-        validateSoluction(sol[i]->melhorSolucao, grafo, &edges, &k);
+        validateSoluction(sol[i], grafo, &edges, &k);
         free(sol[i]);
     }
 
