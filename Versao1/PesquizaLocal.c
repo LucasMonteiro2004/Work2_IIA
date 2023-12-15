@@ -55,7 +55,7 @@ int calculaCustoTotal(int *solucao, Edge **edges, int numArestas) {
     return custoTotal;
 }
 
-int *geraSolucaoInicial(int k, Edge **edges, Grafo **grafo) {
+int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
     int tam = (*grafo)->numVertices;
     int *solucaoInicial = (int *)malloc(tam * sizeof(int));
 
@@ -80,7 +80,7 @@ int *geraSolucaoInicial(int k, Edge **edges, Grafo **grafo) {
             }
         }
 
-        if (contador == k) {
+        if (contador == *k) {
             printf("Custo solucao inicial = %d\n", custoTotal);
             return solucaoInicial;
         }
