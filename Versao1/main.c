@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "PesquisaLocal.h"
 
-#define INTER 100
+#define INTER 300
 
 int main() {
     srand(time(NULL));
@@ -9,7 +9,7 @@ int main() {
     int *sub;
     Edge *edges;
     Grafo *grafo;
-    Resultado* sol[INTER];
+    Resultado* sol;
 
     printf("Nome arquivo?");
     char arquivo[20];
@@ -24,14 +24,17 @@ int main() {
         printf("Aresta %d: %c %d %d %d\n", i + 1, edges[i].car, edges[i].u, edges[i].v, edges[i].cost);
     }
 
+    sub = geraSolucaoInicial(&k, &edges, &grafo);
+    imprimirSubconjunto(sub, grafo->numVertices);
+
     for(int i = 0; i < INTER; i++){
-        sol[i] = (Resultado*)malloc(sizeof(Resultado));
-        sub = geraSolucaoInicial(&k, &edges, &grafo);
-        imprimirSubconjunto(sub, grafo->numVertices);
-        sol[i] = Hill_Climbing_2(sub, grafo, &edges, &k);
-        imprimirSubconjunto(sol[i]->melhorSolucao, grafo->numVertices);
-        validateSoluction(sol[i], grafo, &edges, &k);
-        free(sol[i]);
+        sol = Hill_Climbing_2(sub, grafo, &edges, &k);
+        imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
+        validateSoluction(sol, grafo, &edges, &k);
+
+        memcpy(sub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+
+        free(sol);
     }
 
     free(edges);
