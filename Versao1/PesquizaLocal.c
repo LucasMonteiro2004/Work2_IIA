@@ -26,7 +26,7 @@ void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **ed
         (*edges)[i].cost = cost;
     }
 
-    *grafo = (Grafo *)malloc(sizeof(Grafo));  // Allocate memory for Grafo structure
+    *grafo = (Grafo *)malloc(sizeof(Grafo));
     (*grafo)->numVertices = *numVertices;
     (*grafo)->numArestas = *numEdges;
 
@@ -80,7 +80,7 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
             }
         }
 
-        if (contador == *k) {
+        if (contador == *k || contador >= *k) {
             printf("Custo solucao inicial = %d\n", custoTotal);
             return solucaoInicial;
         }
