@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "PesquisaLocal.h"
 
-#define INTER 10
+#define INTER 100
 
 int main() {
     srand(time(NULL));
