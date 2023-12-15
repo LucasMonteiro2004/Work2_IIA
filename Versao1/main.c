@@ -45,7 +45,7 @@ int main() {
                 memcpy(melhorSub, sub, grafo->numVertices * sizeof(int));
 
                 for(int i = 0; i < INTER; i++){
-                    sol = Hill_Climbing_2(sub, grafo, &edges, &k);
+                    sol = Hill_Climbing(sub, grafo, &edges, &k);
                     imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
                     validateSoluction(sol, grafo, &edges, &k);
                     int custoAtual = calculaCustoTotal(sol->melhorSolucao, &edges, grafo->numArestas);
