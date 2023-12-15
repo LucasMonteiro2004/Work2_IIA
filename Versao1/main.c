@@ -25,6 +25,7 @@ int main() {
     }
 
     for(int i = 0; i < INTER; i++){
+        sol[i] = (Resultado*)malloc(sizeof(Resultado));
         sub = geraSolucaoInicial(&k, &edges, &grafo);
         imprimirSubconjunto(sub, grafo->numVertices);
         sol[i] = Hill_Climbing_2(sub, grafo, &edges, &k);
