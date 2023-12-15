@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,7 +8,7 @@
 
 int main() {
     srand(time(NULL));
-    int k, numVertices, numEdges, opcao = 100;
+    int k, numVertices, numEdges, opcao = -1;
     int *sub, *melhorSub;
     Edge *edges;
     Grafo *grafo;
@@ -21,7 +20,11 @@ int main() {
         printf("\nEscolha uma opcao:\n");
         printf("1. Hill Climbing gerando 1 vizinho\n");
         printf("2. Hill Climbing gerando 2 vizinhos\n");
-        printf("3. \n");
+        printf("3. Single Point Crossover\n");
+        printf("4. double Point Crossover\n");
+        printf("5. Mutacao Troca\n");
+        printf("6. Mutacao Insercao\n");
+        printf("7. Hibrido\n");
         printf("0. Sair\n");
         printf("Opcao: ");
         scanf("%d", &opcao);
@@ -58,6 +61,9 @@ int main() {
 
                 printf("Melhor solucao encontrada com custo: %d\n", melhorCusto);
                 imprimirSubconjunto(melhorSub, grafo->numVertices);
+                free(edges);
+                free(grafo);
+                free(sub);
                 break;
 
             case 2:
@@ -91,10 +97,39 @@ int main() {
 
                 printf("Melhor solucao encontrada com custo: %d\n", melhorCusto);
                 imprimirSubconjunto(melhorSub, grafo->numVertices);
+                free(edges);
+                free(grafo);
+                free(sub);
                 break;
 
             case 3:
-                // Código para mostrar a melhor solução
+                printf("Nome arquivo?");
+                scanf("%s", arquivo);
+                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
+                break;
+
+            case 4:
+                printf("Nome arquivo?");
+                scanf("%s", arquivo);
+                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
+                break;
+
+            case 5:
+                printf("Nome arquivo?");
+                scanf("%s", arquivo);
+                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
+                break;
+
+            case 6:
+                printf("Nome arquivo?");
+                scanf("%s", arquivo);
+                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
+                break;
+
+            case 7:
+                printf("Nome arquivo?");
+                scanf("%s", arquivo);
+                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
                 break;
 
             case 0:
@@ -102,13 +137,9 @@ int main() {
                 break;
 
             default:
-                printf("Opção inválida!\n");
+                printf("Opcao invalida!\n");
         }
     }
 
-    free(edges);
-    free(grafo);
-    free(sub);
     return 0;
 }
-
