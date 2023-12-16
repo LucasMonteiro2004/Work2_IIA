@@ -194,7 +194,6 @@ int main() {
                 free(duasSolucoes);
                 break;
 
-
             case 5:
                 printf("\nNome arquivo?");
                 scanf("%s", arquivo);
