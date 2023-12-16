@@ -275,6 +275,41 @@ int main() {
                 free(sub);
                 break;
 
+            case 7:
+                printf("\nNome arquivo?");
+                scanf("%s", arquivo);
+                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
+
+                printf("k: %d\n", k);
+                printf("Numero de vertices: %d\n", grafo->numVertices);
+                printf("Numero de arestas: %d\n", grafo->numArestas);
+
+                int *subSolucao = geraSolucaoInicial(&k, &edges, &grafo);
+                imprimirSubconjunto(subSolucao, grafo->numVertices);
+                melhorSub = malloc(grafo->numVertices * sizeof(int));
+                memcpy(melhorSub, subSolucao, grafo->numVertices * sizeof(int));
+
+                for(int i = 0; i < INTER; i++){
+                    sol = Hibrido(k, &edges, grafo, 5,subSolucao);
+                    imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
+                    if(validateSoluction(sol, grafo, &edges, &k) == 1){
+                        int custoAtual = calculaCustoTotal(sol->melhorSolucao, &edges, grafo->numArestas);
+
+                        if (custoAtual < melhorCusto) {
+                            melhorCusto = custoAtual;
+                            memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+                        }
+                    }
+                    memcpy(subSolucao, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+                    free(sol);
+                }
+                imprimirSubconjunto(melhorSub, grafo->numVertices);
+                printf("Melhor solucao encontrada com custo: %d\n", calculaCustoTotal(melhorSub, &edges, grafo->numArestas));
+
+                free(edges);
+                free(grafo);
+                break;
+
             case 0:
                 printf("Saindo...\n");
                 return 0;
@@ -282,6 +317,7 @@ int main() {
             default:
                 printf("Opcao invalida!\n");
         }
+
     }
     return 0;
 }

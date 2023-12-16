@@ -1,36 +1,26 @@
 #include "AbordagensHíbridas.h"
 
-int* Hibrido(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo, Edge** edges, int* k, int interacoes){
-    int *melhorSub;
-    Resultado *sol;
-    int melhorCusto = INT_MAX;
-    melhorSub = malloc(grafo->numVertices * sizeof(int));
+Resultado * Hibrido(int k, Edge **edges, Grafo *grafo, int interacoes, int* solucaoInicial) {
+    Resultado *resultadoMutacao = algoritmoMutacao_Troca(solucaoInicial, grafo);
+    Resultado *resultadoFinal;
+    int melhorCusto;
+    int * melhorSub = malloc(grafo->numVertices * sizeof(int));
 
-    // Obter duas soluções iniciais do crossover
-    int **solucoesCrossover = algoritmoRecombinacao_Single_Point_Crossover(melhorSolucao1, melhorSolucao2, grafo);
-
-    for (int s = 0; s < 2; s++) {
-        int *solucaoAtual = solucoesCrossover[s];
-        for (int i = 0; i < interacoes; i++) {
-            sol = Hill_Climbing_2(solucaoAtual, grafo, edges, k);
-            imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
-            validateSoluction(sol, grafo, edges, k);
-            int custoAtual = calculaCustoTotal(sol->melhorSolucao, edges, grafo->numArestas);
+    for(int i = 0; i < interacoes; i++){
+        resultadoFinal = Hill_Climbing_2(resultadoMutacao->melhorSolucao, grafo, edges, &k);
+        if(validateSoluction(resultadoFinal, grafo, edges, &k) == 1){
+            int custoAtual = calculaCustoTotal(resultadoFinal->melhorSolucao, edges, grafo->numArestas);
 
             if (custoAtual < melhorCusto) {
                 melhorCusto = custoAtual;
-                memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+                memcpy(melhorSub, resultadoFinal->melhorSolucao, grafo->numVertices * sizeof(int));
             }
-
-            memcpy(solucaoAtual, sol->melhorSolucao, grafo->numVertices * sizeof(int));
-            free(sol);
         }
+        memcpy(resultadoMutacao->melhorSolucao, resultadoFinal->melhorSolucao, grafo->numVertices * sizeof(int));
+        free(resultadoFinal);
     }
 
-    for (int i = 0; i < 2; i++) {
-        free(solucoesCrossover[i]);
-    }
-    free(solucoesCrossover);
-
-    return melhorSub;
+    memcpy(resultadoMutacao->melhorSolucao, melhorSub, grafo->numVertices * sizeof(int));
+    free(melhorSub);
+    return resultadoMutacao;
 }
