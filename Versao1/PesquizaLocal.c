@@ -265,9 +265,9 @@ int* reparacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
     return melhorSolucao;
 }
 
-Penalizacao penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
+Penalizacao *penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
     Penalizacao *p = (Penalizacao *)malloc(sizeof(Penalizacao));
     p->melhorsolucao = melhorSolucao;
     p->cost = 10000;
-    return *p;
+    return p;
 }
