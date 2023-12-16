@@ -5,23 +5,32 @@ int* Hibrido(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo, Edge** edge
     Resultado *sol;
     int melhorCusto = INT_MAX;
     melhorSub = malloc(grafo->numVertices * sizeof(int));
-    int *solucaoTrepaColinas = algoritmoRecombinacao_Single_Point_Crossover(melhorSolucao1, melhorSolucao2, grafo, edges, k);
-    memcpy(melhorSub, solucaoTrepaColinas, grafo->numVertices * sizeof(int));
 
-    for(int i = 0; i < interacoes; i++){
-        sol = Hill_Climbing_2(solucaoTrepaColinas, grafo, edges, k);
-        imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
-        validateSoluction(sol, grafo, edges, k);
-        int custoAtual = calculaCustoTotal(sol->melhorSolucao, edges, grafo->numArestas);
+    // Obter duas soluções iniciais do crossover
+    int **solucoesCrossover = algoritmoRecombinacao_Single_Point_Crossover(melhorSolucao1, melhorSolucao2, grafo);
 
-        if (custoAtual < melhorCusto) {
-            melhorCusto = custoAtual;
-            memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+    for (int s = 0; s < 2; s++) {
+        int *solucaoAtual = solucoesCrossover[s];
+        for (int i = 0; i < interacoes; i++) {
+            sol = Hill_Climbing_2(solucaoAtual, grafo, edges, k);
+            imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
+            validateSoluction(sol, grafo, edges, k);
+            int custoAtual = calculaCustoTotal(sol->melhorSolucao, edges, grafo->numArestas);
+
+            if (custoAtual < melhorCusto) {
+                melhorCusto = custoAtual;
+                memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+            }
+
+            memcpy(solucaoAtual, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+            free(sol);
         }
-
-        memcpy(solucaoTrepaColinas, sol->melhorSolucao, grafo->numVertices * sizeof(int));
-        free(sol);
     }
-    free(solucaoTrepaColinas);
-    return (melhorSub);
+
+    for (int i = 0; i < 2; i++) {
+        free(solucoesCrossover[i]);
+    }
+    free(solucoesCrossover);
+
+    return melhorSub;
 }

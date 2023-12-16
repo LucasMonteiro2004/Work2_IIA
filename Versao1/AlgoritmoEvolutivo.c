@@ -1,22 +1,25 @@
 #include "AlgoritmoEvolutivo.h"
 #include "PesquisaLocal.h"
 
-int* algoritmoRecombinacao_Single_Point_Crossover(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo, Edge** edges, int* k) {
-    int* novaSolucao = (int*)malloc(grafo->numVertices * sizeof(int));
+int** algoritmoRecombinacao_Single_Point_Crossover(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo) {
+    int** solucoes = (int**)malloc(2 * sizeof(int*));
     int pontoCorte = rand() % grafo->numVertices;
 
-    // Copia a primeira parte da solução do melhorSolucao1
-    memcpy(novaSolucao, melhorSolucao1, pontoCorte * sizeof(int));
+    // Primeira solução
+    solucoes[0] = (int*)malloc(grafo->numVertices * sizeof(int));
+    memcpy(solucoes[0], melhorSolucao1, pontoCorte * sizeof(int));
+    memcpy(solucoes[0] + pontoCorte, melhorSolucao2 + pontoCorte, (grafo->numVertices - pontoCorte) * sizeof(int));
 
-    // Copia a segunda parte da solução do melhorSolucao2
-    memcpy(novaSolucao + pontoCorte, melhorSolucao2 + pontoCorte, (grafo->numVertices - pontoCorte) * sizeof(int));
+    // Segunda solução (inversa)
+    solucoes[1] = (int*)malloc(grafo->numVertices * sizeof(int));
+    memcpy(solucoes[1], melhorSolucao2, pontoCorte * sizeof(int));
+    memcpy(solucoes[1] + pontoCorte, melhorSolucao1 + pontoCorte, (grafo->numVertices - pontoCorte) * sizeof(int));
 
-    return novaSolucao;
+    return solucoes;
 }
 
-int* algoritmoRecombinacao_Double_Point_Crossover(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo, Edge** edges, int* k) {
-    int* novaSolucao = (int*)malloc(grafo->numVertices * sizeof(int));
-
+int** algoritmoRecombinacao_Double_Point_Crossover(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo) {
+    int** solucoes = (int**)malloc(2 * sizeof(int*));
     int pontoCorte1 = rand() % grafo->numVertices;
     int pontoCorte2;
 
@@ -24,20 +27,24 @@ int* algoritmoRecombinacao_Double_Point_Crossover(int* melhorSolucao1, int* melh
         pontoCorte2 = rand() % grafo->numVertices;
     } while (pontoCorte2 == pontoCorte1);
 
-    int pontoInicio = (pontoCorte1 < pontoCorte2) ? pontoCorte1 : pontoCorte2;
-    int pontoFim = (pontoCorte1 < pontoCorte2) ? pontoCorte2 : pontoCorte1;
+    int pontoInicio = pontoCorte1 < pontoCorte2 ? pontoCorte1 : pontoCorte2;
+    int pontoFim = pontoCorte1 > pontoCorte2 ? pontoCorte1 : pontoCorte2;
 
-    // Copia a primeira parte da solução do melhorSolucao1
-    memcpy(novaSolucao, melhorSolucao1, pontoInicio * sizeof(int));
+    // Primeira solução
+    solucoes[0] = (int*)malloc(grafo->numVertices * sizeof(int));
+    memcpy(solucoes[0], melhorSolucao1, pontoInicio * sizeof(int));
+    memcpy(solucoes[0] + pontoInicio, melhorSolucao2 + pontoInicio, (pontoFim - pontoInicio) * sizeof(int));
+    memcpy(solucoes[0] + pontoFim, melhorSolucao1 + pontoFim, (grafo->numVertices - pontoFim) * sizeof(int));
 
-    // Copia a segunda parte da solução do melhorSolucao2
-    memcpy(novaSolucao + pontoInicio, melhorSolucao2 + pontoInicio, (pontoFim - pontoInicio) * sizeof(int));
+    // Segunda solução (inversa)
+    solucoes[1] = (int*)malloc(grafo->numVertices * sizeof(int));
+    memcpy(solucoes[1], melhorSolucao2, pontoInicio * sizeof(int));
+    memcpy(solucoes[1] + pontoInicio, melhorSolucao1 + pontoInicio, (pontoFim - pontoInicio) * sizeof(int));
+    memcpy(solucoes[1] + pontoFim, melhorSolucao2 + pontoFim, (grafo->numVertices - pontoFim) * sizeof(int));
 
-    // Copia a terceira parte da solução do melhorSolucao1
-    memcpy(novaSolucao + pontoFim, melhorSolucao1 + pontoFim, (grafo->numVertices - pontoFim) * sizeof(int));
-
-    return novaSolucao;
+    return solucoes;
 }
+
 
 // Função auxiliar para trocar dois elementos em um array
 void trocaElementos(int* solucao, int posicao1, int posicao2) {

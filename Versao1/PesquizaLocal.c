@@ -98,6 +98,56 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
     return NULL;
 }
 
+int **geraDuasSolucoesIniciais(int *k, Edge **edges, Grafo **grafo) {
+    int tam = (*grafo)->numVertices;
+
+    // Aloca memória para duas soluções
+    int **solucoes = (int **)malloc(2 * sizeof(int *));
+    for (int i = 0; i < 2; ++i) {
+        solucoes[i] = (int *)malloc(tam * sizeof(int));
+        for (int j = 0; j < tam; ++j) {
+            solucoes[i][j] = 0;
+        }
+    }
+
+    // Gerar duas soluções iniciais diferentes
+    for (int sol = 0; sol < 2; ++sol) {
+        int custoTotal = 0;
+        int numeroAleatorio = rand() % 3; // Ou qualquer outra lógica para variar as soluções
+
+        for (int i = 0; i < (*grafo)->numArestas; ++i) {
+            // Modifique esta parte conforme necessário para gerar soluções diferentes
+            int pos1 = (*edges)[i].u - 1, pos2 = (*edges)[i].v - 1;
+            solucoes[sol][pos1] = 1;
+            solucoes[sol][pos2] = 1;
+
+            custoTotal = calculaCustoTotal(solucoes[sol], edges, (*grafo)->numArestas);
+
+            int contador = 0;
+            for (int j = 0; j < tam; ++j) {
+                if (solucoes[sol][j] == 1) {
+                    contador++;
+                }
+            }
+
+            if (contador == *k) {
+                printf("Custo solucao %d = %d\n", sol, custoTotal);
+                break; // Sai do loop para a próxima solução
+            } else if (contador > *k) {
+                for (int j = 0; j < tam; ++j) {
+                    if (solucoes[sol][j] == 1) {
+                        solucoes[sol][j] = 0;
+                        break;
+                    }
+                }
+                break; // Sai do loop para a próxima solução
+            }
+        }
+    }
+
+    return solucoes;
+}
+
 int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo) {
     int *neighbor = (int *)malloc(grafo->numVertices * sizeof(int));
     memcpy(neighbor, solucaoInicial, grafo->numVertices * sizeof(int));
