@@ -54,54 +54,85 @@ void trocaElementos(int* solucao, int posicao1, int posicao2) {
 }
 
 // Mutação de Troca
-int *algoritmoMutacao_Troca(int *solucaoInicial, Grafo *grafo) {
-    int *novaSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
-    if (novaSolucao == NULL) {
-        // Tratamento de erro de alocação de memória
+Resultado *algoritmoMutacao_Troca(int *solucaoInicial, Grafo *grafo) {
+    Resultado *res = (Resultado *)malloc(sizeof(Resultado));
+    if (res == NULL) {
+        // Tratamento de erro de alocação de memória para Resultado
         return NULL;
     }
 
-    memcpy(novaSolucao, solucaoInicial, grafo->numVertices * sizeof(int));
+    res->melhorSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
+    if (res->melhorSolucao == NULL) {
+        // Tratamento de erro de alocação de memória para melhorSolucao
+        free(res);
+        return NULL;
+    }
 
+    // Copia a solução inicial para melhorSolucao
+    memcpy(res->melhorSolucao, solucaoInicial, grafo->numVertices * sizeof(int));
+
+    // Realiza a mutação por troca
     int posicao1 = rand() % grafo->numVertices;
     int posicao2;
     do {
         posicao2 = rand() % grafo->numVertices;
     } while (posicao2 == posicao1);
 
-    int temp = novaSolucao[posicao1];
-    novaSolucao[posicao1] = novaSolucao[posicao2];
-    novaSolucao[posicao2] = temp;
+    int temp = res->melhorSolucao[posicao1];
+    res->melhorSolucao[posicao1] = res->melhorSolucao[posicao2];
+    res->melhorSolucao[posicao2] = temp;
 
-    return novaSolucao;
+    // Inicializa os outros campos da estrutura Resultado
+    res->melhorSolucao2 = NULL; // ou alocar e definir conforme necessário
+    res->solucaoInicial = solucaoInicial; // mantendo a referência para a solução inicial
+    // O custo da melhor solução pode ser calculado aqui ou mais tarde
+    res->custo_melhor_solucao = 0; // ou calcular o custo se necessário
+
+    return res;
 }
 
-
 // Mutação de Inserção
-int* algoritmoMutacao_Insercao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k) {
-    int* novaSolucao = (int*)malloc(grafo->numVertices * sizeof(int));
+Resultado *algoritmoMutacao_Insercao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k) {
+    Resultado *res = (Resultado *)malloc(sizeof(Resultado));
+    if (res == NULL) {
+        // Tratamento de erro de alocação de memória para Resultado
+        return NULL;
+    }
 
-    // Copia a solução original para a nova solução
-    memcpy(novaSolucao, melhorSolucao, grafo->numVertices * sizeof(int));
+    res->melhorSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
+    if (res->melhorSolucao == NULL) {
+        // Tratamento de erro de alocação de memória para melhorSolucao
+        free(res);
+        return NULL;
+    }
 
-    // Escolhe uma posição aleatória para remover um elemento
+    // Copia a solução original para melhorSolucao
+    memcpy(res->melhorSolucao, melhorSolucao, grafo->numVertices * sizeof(int));
+
+    // Realiza a mutação por inserção
     int posicaoRemocao = rand() % grafo->numVertices;
-
-    // Remove o elemento da posição escolhida
-    int elementoRemovido = novaSolucao[posicaoRemocao];
-
-    // Escolhe uma posição aleatória diferente para inserir o elemento removido
     int posicaoInsercao;
-
     do {
         posicaoInsercao = rand() % grafo->numVertices;
     } while (posicaoInsercao == posicaoRemocao);
 
+    // Elemento a ser movido
+    int elementoMovido = res->melhorSolucao[posicaoRemocao];
+
     // Desloca os elementos para abrir espaço para a inserção
-    memmove(novaSolucao + posicaoInsercao + 1, novaSolucao + posicaoInsercao, (grafo->numVertices - posicaoInsercao - 1) * sizeof(int));
+    if (posicaoInsercao < posicaoRemocao) {
+        memmove(res->melhorSolucao + posicaoInsercao + 1, res->melhorSolucao + posicaoInsercao, (posicaoRemocao - posicaoInsercao) * sizeof(int));
+    } else {
+        memmove(res->melhorSolucao + posicaoRemocao, res->melhorSolucao + posicaoRemocao + 1, (posicaoInsercao - posicaoRemocao) * sizeof(int));
+    }
 
-    // Insere o elemento removido na nova posição
-    novaSolucao[posicaoInsercao] = elementoRemovido;
+    // Insere o elemento movido na nova posição
+    res->melhorSolucao[posicaoInsercao] = elementoMovido;
 
-    return novaSolucao;
+    // Inicializa os outros campos da estrutura Resultado
+    res->melhorSolucao2 = NULL;
+    res->solucaoInicial = melhorSolucao;
+    res->custo_melhor_solucao = 0; // ou calcular o custo se necessário
+
+    return res;
 }
