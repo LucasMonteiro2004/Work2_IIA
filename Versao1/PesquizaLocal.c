@@ -309,7 +309,9 @@ int validateSoluction(Resultado * resultado, Grafo *grafo, Edge **edges, int *k)
 }
 
 int* reparacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
-    while ((validateSoluction(melhorSolucao, grafo, edges, k) != 1)){
+    Resultado res;
+    res.melhorSolucao = melhorSolucao;
+    while ((validateSoluction(&res, grafo, edges, k) != 1)){
         melhorSolucao = generates_neighbor_2(melhorSolucao, grafo);
     }
     return melhorSolucao;
