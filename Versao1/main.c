@@ -204,13 +204,46 @@ int main() {
                 break;
 
             case 5:
+                printf("\nNome arquivo?");
+                scanf("%s", arquivo);
+                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
 
+                printf("k: %d\n", k);
+                printf("Numero de vertices: %d\n", grafo->numVertices);
+                printf("Numero de arestas: %d\n", grafo->numArestas);
+
+                sub = geraSolucaoInicial(&k, &edges, &grafo);
+                imprimirSubconjunto(sub, grafo->numVertices);
+                melhorSub = malloc(grafo->numVertices * sizeof(int));
+                memcpy(melhorSub, sub, grafo->numVertices * sizeof(int));
+
+                for(int i = 0; i < INTER; i++){
+                    sol = (Resultado*) malloc(sizeof(Resultado));
+                    sol->melhorSolucao = algoritmoMutacao_Troca(sub, grafo);
+                    imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
+
+                    if(validateSoluction(sol, grafo, &edges, &k) == 1){
+                        int custoAtual = calculaCustoTotal(sol->melhorSolucao, &edges, grafo->numArestas);
+                        if (custoAtual < melhorCusto) {
+                            melhorCusto = custoAtual;
+                            memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+                        }
+                    }
+
+                    memcpy(sub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+                    free(sol);
+                }
+                imprimirSubconjunto(melhorSub, grafo->numVertices);
+                printf("Melhor solucao encontrada com custo: %d\n", calculaCustoTotal(melhorSub, &edges, grafo->numArestas));
+
+                free(edges);
+                free(grafo);
+                free(sub);
                 break;
 
             case 0:
                 printf("Saindo...\n");
                 return 0;
-                break;
 
             default:
                 printf("Opcao invalida!\n");

@@ -8,7 +8,7 @@
 
 int** algoritmoRecombinacao_Single_Point_Crossover(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo);
 int** algoritmoRecombinacao_Double_Point_Crossover(int* melhorSolucao1, int* melhorSolucao2, Grafo* grafo);
-int* algoritmoMutacao_Troca(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k);
+int *algoritmoMutacao_Troca(int *solucaoInicial, Grafo *grafo) ;
 int* algoritmoMutacao_Insercao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k);
 
 #endif //VERSAO1_ALGORITMOEVOLUTIVO_H

@@ -54,25 +54,28 @@ void trocaElementos(int* solucao, int posicao1, int posicao2) {
 }
 
 // Mutação de Troca
-int* algoritmoMutacao_Troca(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k) {
-    int* novaSolucao = (int*)malloc(grafo->numVertices * sizeof(int));
+int *algoritmoMutacao_Troca(int *solucaoInicial, Grafo *grafo) {
+    int *novaSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
+    if (novaSolucao == NULL) {
+        // Tratamento de erro de alocação de memória
+        return NULL;
+    }
 
-    // Copia a solução original para a nova solução
-    memcpy(novaSolucao, melhorSolucao, grafo->numVertices * sizeof(int));
+    memcpy(novaSolucao, solucaoInicial, grafo->numVertices * sizeof(int));
 
-    // Escolhe duas posições aleatórias diferentes na solução
     int posicao1 = rand() % grafo->numVertices;
     int posicao2;
-
     do {
         posicao2 = rand() % grafo->numVertices;
     } while (posicao2 == posicao1);
 
-    // Troca os elementos nas posições escolhidas
-    trocaElementos(novaSolucao, posicao1, posicao2);
+    int temp = novaSolucao[posicao1];
+    novaSolucao[posicao1] = novaSolucao[posicao2];
+    novaSolucao[posicao2] = temp;
 
     return novaSolucao;
 }
+
 
 // Mutação de Inserção
 int* algoritmoMutacao_Insercao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k) {
