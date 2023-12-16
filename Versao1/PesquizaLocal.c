@@ -99,8 +99,38 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
 }
 
 int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo) {
-    int *neighbor2 = (int *)malloc(grafo->numVertices * sizeof(int));
-    memcpy(neighbor2, solucaoInicial, grafo->numVertices * sizeof(int));
+    int *neighbor = (int *)malloc(grafo->numVertices * sizeof(int));
+    memcpy(neighbor, solucaoInicial, grafo->numVertices * sizeof(int));
+
+    // Primeira troca
+    int random_neighbor1 = rand() % grafo->numVertices;
+    int random_neighbor2;
+    do {
+        random_neighbor2 = rand() % grafo->numVertices;
+    } while (random_neighbor2 == random_neighbor1);
+
+    int temp = neighbor[random_neighbor1];
+    neighbor[random_neighbor1] = neighbor[random_neighbor2];
+    neighbor[random_neighbor2] = temp;
+
+    // Segunda troca
+    int random_neighbor3;
+    int random_neighbor4;
+    do {
+        random_neighbor3 = rand() % grafo->numVertices;
+        random_neighbor4 = rand() % grafo->numVertices;
+    } while (random_neighbor3 == random_neighbor4 || random_neighbor3 == random_neighbor1 || random_neighbor4 == random_neighbor1 || random_neighbor4 == random_neighbor2);
+
+    temp = neighbor[random_neighbor3];
+    neighbor[random_neighbor3] = neighbor[random_neighbor4];
+    neighbor[random_neighbor4] = temp;
+
+    return neighbor;
+}
+
+int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo) {
+    int *neighbor1 = (int *)malloc(grafo->numVertices * sizeof(int));
+    memcpy(neighbor1, solucaoInicial, grafo->numVertices * sizeof(int));
 
     int random_neighbor1 = rand() % grafo->numVertices;
     int random_neighbor2;
@@ -108,28 +138,9 @@ int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo) {
         random_neighbor2 = rand() % grafo->numVertices;
     } while (random_neighbor2 == random_neighbor1);
 
-    int temp = neighbor2[random_neighbor1];
-    neighbor2[random_neighbor1] = neighbor2[random_neighbor2];
-    neighbor2[random_neighbor2] = temp;
-
-    return neighbor2;
-}
-
-
-int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo) {
-    int *neighbor1 = (int *)malloc(grafo->numVertices * sizeof(int));
-    memcpy(neighbor1, solucaoInicial, grafo->numVertices * sizeof(int));
-
-    int pos1 = rand() % grafo->numVertices;
-    int pos2;
-    do {
-        pos2 = rand() % grafo->numVertices;
-    } while (pos2 == pos1); // Garantindo que pos2 seja diferente de pos1
-
-    // Trocando os valores
-    int temp = neighbor1[pos1];
-    neighbor1[pos1] = neighbor1[pos2];
-    neighbor1[pos2] = temp;
+    int temp = neighbor1[random_neighbor1];
+    neighbor1[random_neighbor1] = neighbor1[random_neighbor2];
+    neighbor1[random_neighbor2] = temp;
 
     return neighbor1;
 }
@@ -139,6 +150,7 @@ Resultado* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k
     int melhorCusto = calculaCustoTotal(solucaoInicial, edges, grafo->numArestas);
     resultado->melhorSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
     resultado->melhorSolucao2 = (int *)malloc(grafo->numVertices * sizeof(int));
+    resultado->solucaoInicial = (int *)malloc(grafo->numVertices * sizeof(int));
     memcpy(resultado->melhorSolucao, solucaoInicial, grafo->numVertices * sizeof(int));
     int nextCost = 0, cosPreview = 0;
 
@@ -158,7 +170,8 @@ Resultado* Hill_Climbing(int *solucaoInicial, Grafo *grafo, Edge **edges, int *k
     } while (melhorCusto <= nextCost && resultado->melhorSolucao == solucaoInicial);
 
     printf("Custo solucao Final = %d\n", melhorCusto);
-
+    resultado->custo_melhor_solucao = calculaCustoTotal(resultado->melhorSolucao, edges, grafo->numArestas);
+    resultado->solucaoInicial = solucaoInicial;
     return resultado;
 }
 
