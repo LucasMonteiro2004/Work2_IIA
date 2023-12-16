@@ -24,10 +24,6 @@ int main() {
     printf("Numero de vertices: %d\n", grafo->numVertices);
     printf("Numero de arestas: %d\n", grafo->numArestas);
 
-    for (int i = 0; i < grafo->numArestas; i++) {
-        printf("Aresta %d: %c %d %d %d\n", i + 1, edges[i].car, edges[i].u, edges[i].v, edges[i].cost);
-    }
-
     sub = geraSolucaoInicial(&k, &edges, &grafo);
     imprimirSubconjunto(sub, grafo->numVertices);
     melhorSub = malloc(grafo->numVertices * sizeof(int));

@@ -80,8 +80,16 @@ int *geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo) {
             }
         }
 
-        if (contador == *k || contador >= *k) {
+        if (contador == *k) {
             printf("Custo solucao inicial = %d\n", custoTotal);
+            return solucaoInicial;
+        }else if(contador > *k){
+            for (int j = 0; j < tam; ++j) {
+                if(solucaoInicial[j] == 1){
+                    solucaoInicial[j] = 0;
+                    break;
+                }
+            }
             return solucaoInicial;
         }
     }
