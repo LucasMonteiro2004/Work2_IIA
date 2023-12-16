@@ -6,18 +6,19 @@
 #include "AlgoritmoEvolutivo.h"
 #include "AbordagensHíbridas.h"
 
-#define INTER 300
+#define INTER 250
 
 int main() {
     srand(time(NULL));
     int k, numVertices, numEdges, opcao = -1;
-    int *sub, *melhorSub;
+    int *sub;
     Edge *edges;
     Grafo *grafo;
     Resultado *sol;
     char arquivo[20];
+    int **duasSolucoes = geraDuasSolucoesIniciais(&k, &edges, &grafo);
+    int *melhorSub = malloc(grafo->numVertices * sizeof(int));
     int melhorCusto = INT_MAX;
-    int **duasSolucoes;
 
     while (opcao != 0) {
         printf("\nEscolha uma opcao:\n");
@@ -103,47 +104,44 @@ int main() {
                 scanf("%s", arquivo);
                 readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
 
+                printf("k: %d\n", k);
+                printf("Numero de vertices: %d\n", grafo->numVertices);
+                printf("Numero de arestas: %d\n", grafo->numArestas);
+
                 duasSolucoes = geraDuasSolucoesIniciais(&k, &edges, &grafo);
-                melhorSub = NULL;
+                melhorSub = malloc(grafo->numVertices * sizeof(int));
+                melhorCusto = INT_MAX;
 
                 for(int i = 0; i < INTER; i++) {
                     int **solucoesCrossover = algoritmoRecombinacao_Single_Point_Crossover(duasSolucoes[0], duasSolucoes[1], grafo);
 
                     for (int j = 0; j < 2; j++) {
-                        Resultado resTemp;
-                        resTemp.melhorSolucao = solucoesCrossover[j];
-                        resTemp.melhorSolucao2 = NULL;
-                        resTemp.solucaoInicial = NULL;
-                        resTemp.custo_melhor_solucao = 0;
-                        if (!validateSoluction(&resTemp, grafo, &edges, &k)) {
-                            solucoesCrossover[j] = reparacao(solucoesCrossover[j], grafo, &edges, &k);
-                        }
+                        Resultado res;
+                        res.melhorSolucao = solucoesCrossover[j];
+                        imprimirSubconjunto(solucoesCrossover[j], grafo->numVertices);
 
                         int custoAtual = calculaCustoTotal(solucoesCrossover[j], &edges, grafo->numArestas);
                         if (custoAtual < melhorCusto) {
                             melhorCusto = custoAtual;
-                            if (melhorSub) {
-                                free(melhorSub);
-                            }
-                            melhorSub = (int *)malloc(grafo->numVertices * sizeof(int));
                             memcpy(melhorSub, solucoesCrossover[j], grafo->numVertices * sizeof(int));
                         }
                     }
 
-                    free(solucoesCrossover[0]);
-                    free(solucoesCrossover[1]);
-                    free(solucoesCrossover);
+                    // Atualiza as soluções iniciais para a próxima iteração
+                    free(duasSolucoes[0]);
+                    free(duasSolucoes[1]);
+                    duasSolucoes[0] = solucoesCrossover[0];
+                    duasSolucoes[1] = solucoesCrossover[1];
                 }
 
-                if (melhorSub) {
-                    printf("Melhor solucao encontrada com custo: %d\n", melhorCusto);
-                    imprimirSubconjunto(melhorSub, grafo->numVertices);
-                    free(melhorSub);
-                }
+                imprimirSubconjunto(melhorSub, grafo->numVertices);
+                printf("Melhor solucao encontrada com custo: %d\n", melhorCusto);
 
+                free(melhorSub);
                 free(duasSolucoes[0]);
                 free(duasSolucoes[1]);
                 free(duasSolucoes);
+
                 break;
 
             case 4:
@@ -151,172 +149,56 @@ int main() {
                 scanf("%s", arquivo);
                 readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
 
+                printf("k: %d\n", k);
+                printf("Numero de vertices: %d\n", grafo->numVertices);
+                printf("Numero de arestas: %d\n", grafo->numArestas);
+
                 duasSolucoes = geraDuasSolucoesIniciais(&k, &edges, &grafo);
-                int *melhorSolucao = NULL;
+                melhorSub = malloc(grafo->numVertices * sizeof(int));
+                melhorCusto = INT_MAX;
 
                 for(int i = 0; i < INTER; i++) {
                     int **solucoesCrossover = algoritmoRecombinacao_Double_Point_Crossover(duasSolucoes[0], duasSolucoes[1], grafo);
 
                     for (int j = 0; j < 2; j++) {
-                        Resultado resTemp;
-                        resTemp.melhorSolucao = solucoesCrossover[j];
-                        resTemp.melhorSolucao2 = NULL;
-                        resTemp.solucaoInicial = NULL;
-                        resTemp.custo_melhor_solucao = 0;
-                        if (!validateSoluction(&resTemp, grafo, &edges, &k)) {
-                            solucoesCrossover[j] = reparacao(solucoesCrossover[j], grafo, &edges, &k);
-                        }
+                        Resultado res;
+                        res.melhorSolucao = solucoesCrossover[j];
+                        imprimirSubconjunto(solucoesCrossover[j], grafo->numVertices);
 
                         int custoAtual = calculaCustoTotal(solucoesCrossover[j], &edges, grafo->numArestas);
                         if (custoAtual < melhorCusto) {
                             melhorCusto = custoAtual;
-                            if (melhorSolucao) {
-                                free(melhorSolucao);
-                            }
-                            melhorSolucao = (int *)malloc(grafo->numVertices * sizeof(int));
-                            memcpy(melhorSolucao, solucoesCrossover[j], grafo->numVertices * sizeof(int));
+                            memcpy(melhorSub, solucoesCrossover[j], grafo->numVertices * sizeof(int));
                         }
                     }
 
-                    free(solucoesCrossover[0]);
-                    free(solucoesCrossover[1]);
-                    free(solucoesCrossover);
+                    // Atualiza as soluções iniciais para a próxima iteração
+                    free(duasSolucoes[0]);
+                    free(duasSolucoes[1]);
+                    duasSolucoes[0] = solucoesCrossover[0];
+                    duasSolucoes[1] = solucoesCrossover[1];
                 }
 
-                if (melhorSolucao) {
-                    printf("Melhor solução encontrada com custo: %d\n", melhorCusto);
-                    imprimirSubconjunto(melhorSolucao, grafo->numVertices);
-                    free(melhorSolucao);
-                }
+                imprimirSubconjunto(melhorSub, grafo->numVertices);
+                printf("Melhor solucao encontrada com custo: %d\n", melhorCusto);
 
+                free(melhorSub);
                 free(duasSolucoes[0]);
                 free(duasSolucoes[1]);
                 free(duasSolucoes);
+
                 break;
 
             case 5:
-                printf("\nNome arquivo?");
-                scanf("%s", arquivo);
-                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
 
-                sub = geraSolucaoInicial(&k, &edges, &grafo);
-                melhorSolucao = NULL;
-
-                for(int i = 0; i < INTER; i++) {
-                    int *solucaoMutacao = algoritmoMutacao_Troca(sub, grafo, &edges, &k);
-                    Resultado resTemp;
-                    resTemp.melhorSolucao = solucaoMutacao;
-                    resTemp.melhorSolucao2 = NULL;
-                    resTemp.solucaoInicial = NULL;
-                    resTemp.custo_melhor_solucao = 0;
-
-                    if (!validateSoluction(&resTemp, grafo, &edges, &k)) {
-                        solucaoMutacao = reparacao(solucaoMutacao, grafo, &edges, &k);
-                    }
-
-                    int custoAtual = calculaCustoTotal(solucaoMutacao, &edges, grafo->numArestas);
-                    if (custoAtual < melhorCusto) {
-                        melhorCusto = custoAtual;
-                        if (melhorSolucao) {
-                            free(melhorSolucao);
-                        }
-                        melhorSolucao = solucaoMutacao;
-                    } else {
-                        free(solucaoMutacao);
-                    }
-                }
-
-                if (melhorSolucao) {
-                    printf("Melhor solucao encontrada com custo: %d\n", melhorCusto);
-                    imprimirSubconjunto(melhorSolucao, grafo->numVertices);
-                    free(melhorSolucao);
-                }
-
-                free(sub);
                 break;
 
             case 6:
-                printf("\nNome arquivo?");
-                scanf("%s", arquivo);
-                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
 
-                sub = geraSolucaoInicial(&k, &edges, &grafo);
-                melhorSolucao = NULL;
-
-                for(int i = 0; i < INTER; i++) {
-                    int *solucaoMutacao = algoritmoMutacao_Insercao(sub, grafo, &edges, &k);
-                    Resultado resTemp;
-                    resTemp.melhorSolucao = solucaoMutacao;
-                    resTemp.melhorSolucao2 = NULL;
-                    resTemp.solucaoInicial = NULL;
-                    resTemp.custo_melhor_solucao = 0;
-
-                    if (!validateSoluction(&resTemp, grafo, &edges, &k)) {
-                        solucaoMutacao = reparacao(solucaoMutacao, grafo, &edges, &k);
-                    }
-
-                    int custoAtual = calculaCustoTotal(solucaoMutacao, &edges, grafo->numArestas);
-                    if (custoAtual < melhorCusto) {
-                        melhorCusto = custoAtual;
-                        if (melhorSolucao) {
-                            free(melhorSolucao);
-                        }
-                        melhorSolucao = solucaoMutacao;
-                    } else {
-                        free(solucaoMutacao);
-                    }
-                }
-
-                if (melhorSolucao) {
-                    printf("Melhor solucao encontrada com custo: %d\n", melhorCusto);
-                    imprimirSubconjunto(melhorSolucao, grafo->numVertices);
-                    free(melhorSolucao);
-                }
-
-                free(sub);
                 break;
 
             case 7:
-                printf("\nNome arquivo?");
-                scanf("%s", arquivo);
-                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
 
-                duasSolucoes = geraDuasSolucoesIniciais(&k, &edges, &grafo);
-                melhorSolucao = NULL;
-
-                for(int i = 0; i < INTER; i++) {
-                    int *solucaoHibrida = Hibrido(duasSolucoes[0], duasSolucoes[1], grafo, &edges, &k, 1);
-                    Resultado resTemp;
-                    resTemp.melhorSolucao = solucaoHibrida;
-                    resTemp.melhorSolucao2 = NULL;
-                    resTemp.solucaoInicial = NULL;
-                    resTemp.custo_melhor_solucao = 0;
-
-                    if (!validateSoluction(&resTemp, grafo, &edges, &k)) {
-                        solucaoHibrida = reparacao(solucaoHibrida, grafo, &edges, &k);
-                    }
-
-                    int custoAtual = calculaCustoTotal(solucaoHibrida, &edges, grafo->numArestas);
-                    if (custoAtual < melhorCusto) {
-                        melhorCusto = custoAtual;
-                        if (melhorSolucao) {
-                            free(melhorSolucao);
-                        }
-                        melhorSolucao = solucaoHibrida;
-                    } else {
-                        free(solucaoHibrida);
-                    }
-                }
-
-                if (melhorSolucao) {
-                    printf("Melhor solucao encontrada com custo: %d\n", melhorCusto);
-                    imprimirSubconjunto(melhorSolucao, grafo->numVertices);
-                    free(melhorSolucao);
-                }
-
-                free(duasSolucoes[0]);
-                free(duasSolucoes[1]);
-                free(duasSolucoes);
                 break;
 
             case 0:
