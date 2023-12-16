@@ -6,15 +6,15 @@
 #include "AlgoritmoEvolutivo.h"
 #include "AbordagensHíbridas.h"
 
-#define INTER 250
+#define INTER 100
 
 int main() {
     srand(time(NULL));
     int k, numVertices, numEdges, opcao = -1;
-    int *sub, *melhorSub;
+    int *sub, *melhorSub, *sub_1;
     Edge *edges;
     Grafo *grafo;
-    Resultado *sol;
+    Resultado *sol, *sol_1;
     char arquivo[20];
     int melhorCusto = INT_MAX;
 
@@ -49,20 +49,23 @@ int main() {
                 for(int i = 0; i < INTER; i++){
                     sol = Hill_Climbing(sub, grafo, &edges, &k);
                     imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
-                    validateSoluction(sol, grafo, &edges, &k);
-                    int custoAtual = calculaCustoTotal(sol->melhorSolucao, &edges, grafo->numArestas);
+                    if(validateSoluction(sol, grafo, &edges, &k)){
+                        int custoAtual = calculaCustoTotal(sol->melhorSolucao, &edges, grafo->numArestas);
 
-                    if (custoAtual < melhorCusto) {
-                        melhorCusto = custoAtual;
-                        memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+                        if (custoAtual < melhorCusto) {
+                            melhorCusto = custoAtual;
+                            memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+                        }
                     }
-
                     memcpy(sub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
                     free(sol);
                 }
                 imprimirSubconjunto(melhorSub, grafo->numVertices);
                 printf("Melhor solucao encontrada com custo: %d\n", calculaCustoTotal(melhorSub, &edges, grafo->numArestas));
 
+                free(edges);
+                free(grafo);
+                free(sub);
                 break;
 
             case 2:
@@ -74,27 +77,30 @@ int main() {
                 printf("Numero de vertices: %d\n", grafo->numVertices);
                 printf("Numero de arestas: %d\n", grafo->numArestas);
 
-                sub = geraSolucaoInicial(&k, &edges, &grafo);
-                imprimirSubconjunto(sub, grafo->numVertices);
+                sub_1 = geraSolucaoInicial(&k, &edges, &grafo);
+                imprimirSubconjunto(sub_1, grafo->numVertices);
                 melhorSub = malloc(grafo->numVertices * sizeof(int));
-                memcpy(melhorSub, sub, grafo->numVertices * sizeof(int));
+                memcpy(melhorSub, sub_1, grafo->numVertices * sizeof(int));
 
                 for(int i = 0; i < INTER; i++){
-                    sol = Hill_Climbing_2(sub, grafo, &edges, &k);
-                    imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
-                    validateSoluction(sol, grafo, &edges, &k);
-                    int custoAtual = calculaCustoTotal(sol->melhorSolucao, &edges, grafo->numArestas);
+                    sol_1 = Hill_Climbing_2(sub_1, grafo, &edges, &k);
+                    imprimirSubconjunto(sol_1->melhorSolucao, grafo->numVertices);
+                    if(validateSoluction(sol_1, grafo, &edges, &k) == 1){
+                        int custoAtual = calculaCustoTotal(sol_1->melhorSolucao, &edges, grafo->numArestas);
 
-                    if (custoAtual < melhorCusto) {
-                        melhorCusto = custoAtual;
-                        memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+                        if (custoAtual < melhorCusto) {
+                            melhorCusto = custoAtual;
+                            memcpy(melhorSub, sol_1->melhorSolucao, grafo->numVertices * sizeof(int));
+                        }
                     }
-
-                    memcpy(sub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
-                    free(sol);
+                    memcpy(sub_1, sol_1->melhorSolucao, grafo->numVertices * sizeof(int));
+                    free(sol_1);
                 }
                 imprimirSubconjunto(melhorSub, grafo->numVertices);
                 printf("Melhor solucao encontrada com custo: %d\n", calculaCustoTotal(melhorSub, &edges, grafo->numArestas));
+                free(edges);
+                free(grafo);
+                free(sub_1);
                 break;
 
             case 3:
@@ -197,6 +203,10 @@ int main() {
 
                 break;
 
+            case 5:
+
+                break;
+
             case 0:
                 printf("Saindo...\n");
                 return 0;
@@ -206,9 +216,5 @@ int main() {
                 printf("Opcao invalida!\n");
         }
     }
-
-    free(edges);
-    free(grafo);
-    free(sub);
     return 0;
 }
