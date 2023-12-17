@@ -6,7 +6,7 @@
 #include "AlgoritmoEvolutivo.h"
 #include "AbordagensHíbridas.h"
 
-#define INTER 300
+#define INTER 100
 
 int main() {
     srand(time(NULL));
@@ -276,7 +276,7 @@ int main() {
                 break;
 
             case 7:
-                printf("\nNome arquivo?");
+                printf("\nNome do arquivo?");
                 scanf("%s", arquivo);
                 readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
 
@@ -286,28 +286,46 @@ int main() {
 
                 int *subSolucao = geraSolucaoInicial(&k, &edges, &grafo);
                 imprimirSubconjunto(subSolucao, grafo->numVertices);
+
                 melhorSub = malloc(grafo->numVertices * sizeof(int));
+                if (!melhorSub) {
+                    printf("Erro na alocacao de memoria para melhorSub.\n");
+                    free(subSolucao);
+                    // Considerar a liberação de outras memórias alocadas, se necessário
+                    break;
+                }
+
                 memcpy(melhorSub, subSolucao, grafo->numVertices * sizeof(int));
+                melhorCusto = INT_MAX;
 
-                for(int i = 0; i < INTER; i++){
-                    sol = Hibrido(k, &edges, grafo, 5,subSolucao);
-                    imprimirSubconjunto(sol->melhorSolucao, grafo->numVertices);
-                    if(validateSoluction(sol, grafo, &edges, &k) == 1){
-                        int custoAtual = calculaCustoTotal(sol->melhorSolucao, &edges, grafo->numArestas);
+                for (int i = 0; i < INTER; i++) {
+                    int *novaSolucao = Hibrido(k, &edges, grafo, 10, subSolucao);
+                    if (!novaSolucao) {
+                        printf("Erro ao obter solução híbrida.\n");
+                        continue;
+                    }
 
+                    imprimirSubconjunto(novaSolucao, grafo->numVertices);
+
+                    Resultado tempResultado;
+                    tempResultado.melhorSolucao = novaSolucao;
+                    if (validateSoluction(&tempResultado, grafo, &edges, &k)) {
+                        int custoAtual = calculaCustoTotal(novaSolucao, &edges, grafo->numArestas);
                         if (custoAtual < melhorCusto) {
                             melhorCusto = custoAtual;
-                            memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
+                            memcpy(melhorSub, novaSolucao, grafo->numVertices * sizeof(int));
                         }
                     }
-                    memcpy(subSolucao, sol->melhorSolucao, grafo->numVertices * sizeof(int));
-                    free(sol);
-                }
-                imprimirSubconjunto(melhorSub, grafo->numVertices);
-                printf("Melhor solucao encontrada com custo: %d\n", calculaCustoTotal(melhorSub, &edges, grafo->numArestas));
 
-                free(edges);
-                free(grafo);
+                    free(subSolucao); // Libera a antiga solução inicial
+                    subSolucao = novaSolucao; // Atualiza a solução inicial com a nova solução
+                }
+
+                imprimirSubconjunto(melhorSub, grafo->numVertices);
+                printf("Melhor solução encontrada com custo: %d\n", calculaCustoTotal(melhorSub, &edges, grafo->numArestas));
+
+                free(subSolucao);
+                free(melhorSub);
                 break;
 
             case 0:

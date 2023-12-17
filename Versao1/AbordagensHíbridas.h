@@ -4,6 +4,6 @@
 #include "PesquisaLocal.h"
 #include "AlgoritmoEvolutivo.h"
 
-Resultado* Hibrido(int k, Edge **edges, Grafo *grafo, int interacoes, int *solucaoInicial);
+int* Hibrido(int k, Edge **edges, Grafo *grafo, int interacoes, int* solucaoInicial);
 
 #endif //VERSAO1_ABORDAGENSHÍBRIDAS_H
