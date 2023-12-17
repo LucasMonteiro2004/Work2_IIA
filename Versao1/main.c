@@ -169,7 +169,10 @@ int main() {
                                 melhorCusto_1 = custoAtual;
                                 memcpy(melhorSub_1, solucoesCrossover[j], grafo->numVertices * sizeof(int));
                             }
+                        }else {
+                            duasSolucoes[j] = reparacao(duasSolucoes[j], grafo, &edges, &k);
                         }
+
                     }
 
                     memcpy(duasSolucoes[0], solucoesCrossover[0], grafo->numVertices * sizeof(int));
@@ -234,6 +237,8 @@ int main() {
                                 melhorCusto_2 = custoAtual;
                                 memcpy(melhorSub_2, solucoesCrossover[j], grafo->numVertices * sizeof(int));
                             }
+                        }else {
+                            duasSolucoes_2[j] = reparacao(duasSolucoes_2[j], grafo, &edges, &k);
                         }
                     }
 
@@ -291,7 +296,10 @@ int main() {
                             melhorCusto = custoAtual;
                             memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
                         }
+                    }else {
+                        sub = reparacao(sub, grafo, &edges, &k);
                     }
+
                     memcpy(sub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
                     free(sol);
                 }
@@ -339,6 +347,8 @@ int main() {
                             melhorCusto = custoAtual;
                             memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
                         }
+                    }else {
+                        sub = reparacao(sub, grafo, &edges, &k);
                     }
                     memcpy(sub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
                     free(sol);

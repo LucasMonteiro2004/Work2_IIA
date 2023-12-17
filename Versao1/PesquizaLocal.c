@@ -285,21 +285,22 @@ int validateSoluction(Resultado * resultado, Grafo *grafo, Edge **edges, int *k)
     return 1;
 }
 
-int* reparacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
-    Resultado res;
-    res.melhorSolucao = melhorSolucao;
-    while (validateSoluction(&res, grafo, edges, k) != 1){
-        int* novaSolucao = generates_neighbor_2(melhorSolucao, grafo);
-        if (novaSolucao != melhorSolucao) {
-            free(melhorSolucao);
-            melhorSolucao = novaSolucao;
-        } else {
-            free(novaSolucao);
-        }
-    }
-    return melhorSolucao;
-}
+int* reparacao(int* solucaoInicial, Grafo* grafo, Edge** edges, int* k){
+    int *reparo = (int *)malloc(grafo->numVertices * sizeof(int));
+    memcpy(reparo, solucaoInicial, grafo->numVertices * sizeof(int));
 
+    int random_neighbor1 = rand() % grafo->numVertices;
+    int random_neighbor2;
+    do {
+        random_neighbor2 = rand() % grafo->numVertices;
+    } while (random_neighbor2 == random_neighbor1);
+
+    int temp = reparo[random_neighbor1];
+    reparo[random_neighbor1] = reparo[random_neighbor2];
+    reparo[random_neighbor2] = temp;
+
+    return reparo;
+}
 
 Penalizacao *penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
     Penalizacao *p = (Penalizacao *)malloc(sizeof(Penalizacao));

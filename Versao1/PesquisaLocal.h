@@ -39,6 +39,5 @@ int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo);
 int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo);
 int calculaCustoTotal(int *solucao, Edge **edges, int numArestas);
 Penalizacao *penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k);
-int* reparacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k);
-
+int* reparacao(int* solucaoInicial, Grafo* grafo, Edge** edges, int* k);
 #endif //VERSAO1_PESQUISALOCAL_H
