@@ -291,7 +291,6 @@ int main() {
                 if (!melhorSub) {
                     printf("Erro na alocacao de memoria para melhorSub.\n");
                     free(subSolucao);
-                    // Considerar a liberação de outras memórias alocadas, se necessário
                     break;
                 }
 
@@ -302,7 +301,7 @@ int main() {
                     int *novaSolucao = Hibrido(k, &edges, grafo, 10, subSolucao);
                     if (!novaSolucao) {
                         printf("Erro ao obter solução híbrida.\n");
-                        continue;
+                        break;
                     }
 
                     imprimirSubconjunto(novaSolucao, grafo->numVertices);
@@ -317,8 +316,12 @@ int main() {
                         }
                     }
 
-                    free(subSolucao); // Libera a antiga solução inicial
-                    subSolucao = novaSolucao; // Atualiza a solução inicial com a nova solução
+                    if (i < INTER - 1) {
+                        free(subSolucao); // Libera a solução inicial antiga somente se houver mais iterações
+                        subSolucao = novaSolucao; // Atualiza a solução inicial com a nova solução
+                    } else {
+                        free(novaSolucao); // Libera a última solução gerada
+                    }
                 }
 
                 imprimirSubconjunto(melhorSub, grafo->numVertices);
