@@ -31,6 +31,7 @@ int main() {
         printf("7. Hibrido\n");
         printf("8. Recombinacao Single Point Crossover penalisacao\n");
         printf("9. Recombinacao double Point Crossover penalisacao\n");
+        printf("10. Hibrido 2\n");
         printf("0. Sair\n");
         printf("Opcao: ");
         scanf("%d", &opcao);
@@ -563,6 +564,76 @@ int main() {
                 }
                 free(duasSolucoes_4);
 
+                break;
+
+            case 10:
+                printf("\nNome do arquivo?");
+                scanf("%s", arquivo);
+                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
+
+                printf("k: %d\n", k);
+                printf("Numero de vertices: %d\n", grafo->numVertices);
+                printf("Numero de arestas: %d\n", grafo->numArestas);
+
+                totalCusto = 0;
+                iteracoesValidas = 0;
+
+                int *subSolucao_2 = geraSolucaoInicial(&k, &edges, &grafo);
+                imprimirSubconjunto(subSolucao_2, grafo->numVertices);
+
+                melhorSub = malloc(grafo->numVertices * sizeof(int));
+                if (!melhorSub) {
+                    printf("Erro na alocacao de memoria para melhorSub.\n");
+                    free(subSolucao_2);
+                    break;
+                }
+
+                memcpy(melhorSub, subSolucao_2, grafo->numVertices * sizeof(int));
+                melhorCusto = INT_MAX;
+
+                for (int i = 0; i < INTER; i++) {
+                    int *novaSolucao = Hibrido_2(k, &edges, grafo, 10, subSolucao_2);
+                    if (!novaSolucao) {
+                        printf("Erro ao obter solucao hibrida.\n");
+                        break;
+                    }
+                    imprimirSubconjunto(novaSolucao, grafo->numVertices);
+
+                    Resultado tempResultado;
+                    tempResultado.melhorSolucao = malloc(grafo->numVertices * sizeof(int ));
+                    tempResultado.solucaoInicial = subSolucao_2;
+                    tempResultado.custo_melhor_solucao = 0;
+                    tempResultado.melhorSolucao = novaSolucao;
+                    if (validateSoluction(&tempResultado, grafo, &edges, &k) == 1) {
+                        int custoAtual = calculaCustoTotal(novaSolucao, &edges, grafo->numArestas);
+                        totalCusto += custoAtual;
+                        iteracoesValidas++;
+                        if (custoAtual < melhorCusto) {
+                            melhorCusto = custoAtual;
+                            memcpy(melhorSub, novaSolucao, grafo->numVertices * sizeof(int));
+                        }
+                    }
+
+                    if (i < INTER - 1) {
+                        free(subSolucao);
+                        subSolucao = novaSolucao;
+                    } else {
+                        free(novaSolucao);
+                    }
+                }
+                if (iteracoesValidas > 0) {
+                    float mbf = (float)totalCusto / iteracoesValidas;
+                    printf("MBF (Media de Custo): %f\n", mbf);
+                } else {
+                    printf("Nenhuma iteracao valida encontrada.\n");
+                }
+                imprimirSubconjunto(melhorSub, grafo->numVertices);
+                printf("Melhor solucao encontrada com custo: %d\n", calculaCustoTotal(melhorSub, &edges, grafo->numArestas));
+
+                free(subSolucao);
+                free(melhorSub);
+                free(grafo);
+                free(edges);
                 break;
 
             case 0:
