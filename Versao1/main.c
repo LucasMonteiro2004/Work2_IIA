@@ -24,11 +24,13 @@ int main() {
         printf("\nEscolha uma opcao:\n");
         printf("1. Hill Climbing gerando 1 vizinho\n");
         printf("2. Hill Climbing gerando 2 vizinhos\n");
-        printf("3. Recombinacao Single Point Crossover\n");
-        printf("4. Recombinacao double Point Crossover\n");
+        printf("3. Recombinacao Single Point Crossover Reparacao\n");
+        printf("4. Recombinacao double Point Crossover Reparacao\n");
         printf("5. Mutacao troca\n");
         printf("6. Mutacao Insercao\n");
         printf("7. Hibrido\n");
+        printf("8. Recombinacao Single Point Crossover penalisacao\n");
+        printf("9. Recombinacao double Point Crossover penalisacao\n");
         printf("0. Sair\n");
         printf("Opcao: ");
         scanf("%d", &opcao);
@@ -189,7 +191,7 @@ int main() {
                 }
 
                 imprimirSubconjunto(melhorSub_1, grafo->numVertices);
-                printf("Melhor solucao encontrada com custo: %d\n", calculaCustoTotal(melhorSub_1, &edges, grafo->numVertices));
+                printf("Melhor solucao encontrada com custo: %d\n", melhorCusto_1);
 
                 free(melhorSub_1);
                 for (int i = 0; i < 2; i++) {
@@ -429,6 +431,138 @@ int main() {
                 free(melhorSub);
                 free(grafo);
                 free(edges);
+                break;
+
+            case 8:
+                printf("\nNome arquivo?");
+                scanf("%s", arquivo);
+                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
+
+                printf("k: %d\n", k);
+                printf("Numero de vertices: %d\n", grafo->numVertices);
+                printf("Numero de arestas: %d\n", grafo->numArestas);
+
+                totalCusto = 0;
+                iteracoesValidas = 0;
+
+                int **duasSolucoes_3 = geraDuasSolucoesIniciais(&k, &edges, grafo);
+                int *melhorSub_3 = malloc(grafo->numVertices * sizeof(int));
+                memcpy(melhorSub_3, duasSolucoes_3[0], grafo->numVertices * sizeof(int));
+                int melhorCusto_3 = INT_MAX;
+
+                for (int i = 0; i < INTER; i++) {
+                    int **solucoesCrossover = algoritmoRecombinacao_Single_Point_Crossover(duasSolucoes_3[0], duasSolucoes_3[1], grafo);
+
+                    for (int j = 0; j < 2; j++) {
+                        Resultado res_2;
+                        res_2.melhorSolucao = malloc(grafo->numVertices * sizeof(int));
+                        res_2.melhorSolucao = solucoesCrossover[j];
+                        res_2.custo_melhor_solucao = calculaCustoTotal(solucoesCrossover[j], &edges, grafo->numVertices);
+                        res_2.melhorSolucao2 = NULL;
+                        res_2.solucaoInicial = duasSolucoes_3[0];
+                        penalizacao(solucoesCrossover[j], grafo->numVertices, &edges, k, &res_2.custo_melhor_solucao);
+                        imprimirSubconjunto(solucoesCrossover[j], grafo->numVertices);
+                        if (validateSoluction(&res_2, grafo, &edges, &k) == 1) {
+                            int custoAtual = calculaCustoTotal(solucoesCrossover[j], &edges, grafo->numArestas);
+                            totalCusto += custoAtual;
+                            iteracoesValidas++;
+                            if (custoAtual < melhorCusto_3) {
+                                melhorCusto_3 = custoAtual;
+                                memcpy(melhorSub_3, solucoesCrossover[j], grafo->numVertices * sizeof(int));
+                            }
+                        }
+                    }
+
+                    memcpy(duasSolucoes_3[0], solucoesCrossover[0], grafo->numVertices * sizeof(int));
+                    memcpy(duasSolucoes_3[1], solucoesCrossover[1], grafo->numVertices * sizeof(int));
+
+                    free(solucoesCrossover[0]);
+                    free(solucoesCrossover[1]);
+                    free(solucoesCrossover);
+                }
+
+                if (iteracoesValidas > 0) {
+                    float mbf = (float)totalCusto / iteracoesValidas;
+                    printf("MBF (Media de Custo): %f\n", mbf);
+                } else {
+                    printf("Nenhuma iteracao valida encontrada.\n");
+                }
+
+                imprimirSubconjunto(melhorSub_3, grafo->numVertices);
+                printf("Melhor solucao encontrada com custo: %d\n", melhorCusto_3);
+
+                free(melhorSub_3);
+                for (int i = 0; i < 2; i++) {
+                    free(duasSolucoes_3[i]);
+                }
+                free(duasSolucoes_3);
+
+                break;
+
+            case 9:
+                printf("\nNome arquivo?");
+                scanf("%s", arquivo);
+                readFile(arquivo, &k, &numVertices, &numEdges, &edges, &grafo);
+
+                printf("k: %d\n", k);
+                printf("Numero de vertices: %d\n", grafo->numVertices);
+                printf("Numero de arestas: %d\n", grafo->numArestas);
+
+                totalCusto = 0;
+                iteracoesValidas = 0;
+
+                int **duasSolucoes_4 = geraDuasSolucoesIniciais(&k, &edges, grafo);
+                int *melhorSub_4 = malloc(grafo->numVertices * sizeof(int));
+                memcpy(melhorSub_4, duasSolucoes_4[0], grafo->numVertices * sizeof(int));
+                int melhorCusto_4 = INT_MAX;
+
+                for (int i = 0; i < INTER; i++) {
+                    int **solucoesCrossover = algoritmoRecombinacao_Double_Point_Crossover(duasSolucoes_4[0], duasSolucoes_4[1], grafo);
+
+                    for (int j = 0; j < 2; j++) {
+                        Resultado res_3;
+                        res_3.melhorSolucao = malloc(grafo->numVertices * sizeof(int));
+                        res_3.melhorSolucao = solucoesCrossover[j];
+                        res_3.custo_melhor_solucao = calculaCustoTotal(solucoesCrossover[j], &edges, grafo->numVertices);
+                        res_3.melhorSolucao2 = NULL;
+                        res_3.solucaoInicial = duasSolucoes_4[0];
+                        penalizacao(solucoesCrossover[j], grafo->numVertices, &edges, k, &res_3.custo_melhor_solucao);
+                        imprimirSubconjunto(solucoesCrossover[j], grafo->numVertices);
+                        if (validateSoluction(&res_3, grafo, &edges, &k) == 1) {
+                            int custoAtual = calculaCustoTotal(solucoesCrossover[j], &edges, grafo->numArestas);
+                            totalCusto += custoAtual;
+                            iteracoesValidas++;
+                            if (custoAtual < melhorCusto_4) {
+                                melhorCusto_4 = custoAtual;
+                                memcpy(melhorSub_4, solucoesCrossover[j], grafo->numVertices * sizeof(int));
+                            }
+                        }
+                    }
+
+                    memcpy(duasSolucoes_4[0], solucoesCrossover[0], grafo->numVertices * sizeof(int));
+                    memcpy(duasSolucoes_4[1], solucoesCrossover[1], grafo->numVertices * sizeof(int));
+
+                    free(solucoesCrossover[0]);
+                    free(solucoesCrossover[1]);
+                    free(solucoesCrossover);
+                }
+
+                if (iteracoesValidas > 0) {
+                    float mbf = (float)totalCusto / iteracoesValidas;
+                    printf("MBF (Media de Custo): %f\n", mbf);
+                } else {
+                    printf("Nenhuma iteracao valida encontrada.\n");
+                }
+
+                imprimirSubconjunto(melhorSub_4, grafo->numVertices);
+                printf("Melhor solucao encontrada com custo: %d\n", melhorCusto_4);
+
+                free(melhorSub_4);
+                for (int i = 0; i < 2; i++) {
+                    free(duasSolucoes_4[i]);
+                }
+                free(duasSolucoes_4);
+
                 break;
 
             case 0:

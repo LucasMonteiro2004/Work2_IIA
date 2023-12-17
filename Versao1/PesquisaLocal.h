@@ -23,11 +23,6 @@ typedef struct {
     int custo_melhor_solucao;
 } Resultado;
 
-typedef struct {
-    int* melhorsolucao;
-    int cost;
-}Penalizacao;
-
 void readFile(char *fileName, int *k, int *numVertices, int *numEdges, Edge **edges, Grafo **grafo);
 void imprimirSubconjunto(int* subconjunto, int tamanho);
 int* geraSolucaoInicial(int *k, Edge **edges, Grafo **grafo);
@@ -38,6 +33,6 @@ int validateSoluction(Resultado *resultado, Grafo *grafo, Edge **edges, int *k);
 int *generates_neighbor_2(int *solucaoInicial, Grafo *grafo);
 int *generates_neighbor_1(int *solucaoInicial, Grafo *grafo);
 int calculaCustoTotal(int *solucao, Edge **edges, int numArestas);
-Penalizacao *penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k);
+void penalizacao(int* solucao, int numVertices, Edge **edges,int k, int *custo);
 void reparacao(int* solucao, int numVertices, int k);
 #endif //VERSAO1_PESQUISALOCAL_H

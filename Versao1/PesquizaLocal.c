@@ -314,9 +314,34 @@ void reparacao(int* solucao, int numVertices, int k) {
     }
 }
 
-Penalizacao *penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){
-    Penalizacao *p = (Penalizacao *)malloc(sizeof(Penalizacao));
-    p->melhorsolucao = melhorSolucao;
-    p->cost = 10000;
-    return p;
+void penalizacao(int* solucao, int numVertices, Edge **edges,int k, int *custo) {
+    int numAtivos = 0;
+    int precisaPenalizar = 0;
+
+    for (int i = 0; i < numVertices; i++) {
+        if (solucao[i] == 1) {
+            numAtivos++;
+        }
+    }
+
+    if (numAtivos != k) {
+        precisaPenalizar = 1;
+    }
+
+    while (numAtivos != k) {
+        int pos = rand() % numVertices;
+        if (numAtivos > k && solucao[pos] == 1) {
+            solucao[pos] = 0;
+            numAtivos--;
+        } else if (numAtivos < k && solucao[pos] == 0) {
+            solucao[pos] = 1;
+            numAtivos++;
+        }
+    }
+
+    *custo = calculaCustoTotal(solucao, edges, numVertices);
+
+    if (precisaPenalizar) {
+        *custo += 1000;
+    }
 }
