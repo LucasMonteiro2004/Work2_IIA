@@ -6,7 +6,7 @@
 #include "AlgoritmoEvolutivo.h"
 #include "AbordagensHíbridas.h"
 
-#define INTER 700
+#define INTER 100
 
 int main() {
     srand(time(NULL));
