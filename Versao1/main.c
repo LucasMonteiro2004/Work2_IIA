@@ -300,15 +300,17 @@ int main() {
                 for (int i = 0; i < INTER; i++) {
                     int *novaSolucao = Hibrido(k, &edges, grafo, 10, subSolucao);
                     if (!novaSolucao) {
-                        printf("Erro ao obter solução híbrida.\n");
+                        printf("Erro ao obter solucao hibrida.\n");
                         break;
                     }
-
                     imprimirSubconjunto(novaSolucao, grafo->numVertices);
 
                     Resultado tempResultado;
+                    tempResultado.melhorSolucao = malloc(grafo->numVertices * sizeof(int ));
+                    tempResultado.solucaoInicial = subSolucao;
+                    tempResultado.custo_melhor_solucao = 0;
                     tempResultado.melhorSolucao = novaSolucao;
-                    if (validateSoluction(&tempResultado, grafo, &edges, &k)) {
+                    if (validateSoluction(&tempResultado, grafo, &edges, &k) == 1) {
                         int custoAtual = calculaCustoTotal(novaSolucao, &edges, grafo->numArestas);
                         if (custoAtual < melhorCusto) {
                             melhorCusto = custoAtual;
@@ -317,15 +319,15 @@ int main() {
                     }
 
                     if (i < INTER - 1) {
-                        free(subSolucao); // Libera a solução inicial antiga somente se houver mais iterações
-                        subSolucao = novaSolucao; // Atualiza a solução inicial com a nova solução
+                        free(subSolucao);
+                        subSolucao = novaSolucao;
                     } else {
-                        free(novaSolucao); // Libera a última solução gerada
+                        free(novaSolucao);
                     }
                 }
 
                 imprimirSubconjunto(melhorSub, grafo->numVertices);
-                printf("Melhor solução encontrada com custo: %d\n", calculaCustoTotal(melhorSub, &edges, grafo->numArestas));
+                printf("Melhor solucao encontrada com custo: %d\n", calculaCustoTotal(melhorSub, &edges, grafo->numArestas));
 
                 free(subSolucao);
                 free(melhorSub);
