@@ -285,21 +285,33 @@ int validateSoluction(Resultado * resultado, Grafo *grafo, Edge **edges, int *k)
     return 1;
 }
 
-int* reparacao(int* solucaoInicial, Grafo* grafo, Edge** edges, int* k){
-        int *reparo = (int *)malloc(grafo->numVertices * sizeof(int));
-        memcpy(reparo, solucaoInicial, grafo->numVertices * sizeof(int));
+void reparacao(int* solucao, int numVertices, int k) {
+    int numAtivos = 0;
 
-        int random_neighbor1 = rand() % grafo->numVertices;
-        int random_neighbor2;
-        do {
-            random_neighbor2 = rand() % grafo->numVertices;
-        } while (random_neighbor2 == random_neighbor1);
+    // Contar o número de vértices ativos na solução
+    for (int i = 0; i < numVertices; i++) {
+        if (solucao[i] == 1) {
+            numAtivos++;
+        }
+    }
 
-        int temp = reparo[random_neighbor1];
-        reparo[random_neighbor1] = reparo[random_neighbor2];
-        reparo[random_neighbor2] = temp;
+    // Se houver mais vértices ativos do que k, desative alguns aleatoriamente
+    while (numAtivos > k) {
+        int pos = rand() % numVertices;
+        if (solucao[pos] == 1) {
+            solucao[pos] = 0;
+            numAtivos--;
+        }
+    }
 
-        return reparo;
+    // Se houver menos vértices ativos do que k, ative alguns aleatoriamente
+    while (numAtivos < k) {
+        int pos = rand() % numVertices;
+        if (solucao[pos] == 0) {
+            solucao[pos] = 1;
+            numAtivos++;
+        }
+    }
 }
 
 Penalizacao *penalizacao(int* melhorSolucao, Grafo* grafo, Edge** edges, int* k){

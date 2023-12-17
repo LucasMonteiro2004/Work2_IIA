@@ -154,10 +154,11 @@ int main() {
                     int **solucoesCrossover = algoritmoRecombinacao_Single_Point_Crossover(duasSolucoes[0], duasSolucoes[1], grafo);
 
                     for (int j = 0; j < 2; j++) {
+                        reparacao(solucoesCrossover[j], grafo->numVertices, k);
                         Resultado res;
                         res.melhorSolucao = malloc(grafo->numVertices * sizeof(int));
                         res.melhorSolucao = solucoesCrossover[j];
-                        res.custo_melhor_solucao = 0;
+                        res.custo_melhor_solucao = calculaCustoTotal(solucoesCrossover[j], &edges, grafo->numVertices);
                         res.melhorSolucao2 = NULL;
                         res.solucaoInicial = duasSolucoes[0];
                         imprimirSubconjunto(solucoesCrossover[j], grafo->numVertices);
@@ -169,10 +170,7 @@ int main() {
                                 melhorCusto_1 = custoAtual;
                                 memcpy(melhorSub_1, solucoesCrossover[j], grafo->numVertices * sizeof(int));
                             }
-                        }else {
-                            duasSolucoes[j] = reparacao(duasSolucoes[j], grafo, &edges, &k);
                         }
-
                     }
 
                     memcpy(duasSolucoes[0], solucoesCrossover[0], grafo->numVertices * sizeof(int));
@@ -191,7 +189,7 @@ int main() {
                 }
 
                 imprimirSubconjunto(melhorSub_1, grafo->numVertices);
-                printf("Melhor solucao encontrada com custo: %d\n", melhorCusto_1);
+                printf("Melhor solucao encontrada com custo: %d\n", calculaCustoTotal(melhorSub_1, &edges, grafo->numVertices));
 
                 free(melhorSub_1);
                 for (int i = 0; i < 2; i++) {
@@ -222,10 +220,11 @@ int main() {
                     int **solucoesCrossover = algoritmoRecombinacao_Double_Point_Crossover(duasSolucoes_2[0], duasSolucoes_2[1], grafo);
 
                     for (int j = 0; j < 2; j++) {
+                        reparacao(solucoesCrossover[j], grafo->numVertices, k);
                         Resultado res_1;
                         res_1.melhorSolucao = malloc(grafo->numVertices * sizeof(int));
                         res_1.melhorSolucao = solucoesCrossover[j];
-                        res_1.custo_melhor_solucao = 0;
+                        res_1.custo_melhor_solucao = calculaCustoTotal(solucoesCrossover[j], &edges, grafo->numVertices);
                         res_1.melhorSolucao2 = NULL;
                         res_1.solucaoInicial = duasSolucoes_2[0];
                         imprimirSubconjunto(solucoesCrossover[j], grafo->numVertices);
@@ -237,8 +236,6 @@ int main() {
                                 melhorCusto_2 = custoAtual;
                                 memcpy(melhorSub_2, solucoesCrossover[j], grafo->numVertices * sizeof(int));
                             }
-                        }else {
-                            duasSolucoes_2[j] = reparacao(duasSolucoes_2[j], grafo, &edges, &k);
                         }
                     }
 
@@ -296,10 +293,7 @@ int main() {
                             melhorCusto = custoAtual;
                             memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
                         }
-                    }else {
-                        sub = reparacao(sub, grafo, &edges, &k);
                     }
-
                     memcpy(sub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
                     free(sol);
                 }
@@ -347,8 +341,6 @@ int main() {
                             melhorCusto = custoAtual;
                             memcpy(melhorSub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
                         }
-                    }else {
-                        sub = reparacao(sub, grafo, &edges, &k);
                     }
                     memcpy(sub, sol->melhorSolucao, grafo->numVertices * sizeof(int));
                     free(sol);
