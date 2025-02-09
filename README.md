@@ -58,7 +58,6 @@ O projeto contém as seguintes funções principais:
    ```
 
 ## 📜 Licença
-Este projeto é distribuído sob a licença MIT.
 
 ---
 📌 **Observação:** Este README resume as informações do relatório do projeto. Para mais detalhes, consulte o documento original. 🚀
